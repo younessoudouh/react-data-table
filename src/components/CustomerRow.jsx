@@ -28,8 +28,7 @@ function CustomerRow({customer:{ firstName, lastName, description, rate, balance
         <h4 className="inr">{currency}</h4>
     </td>
     <td className="status">
-        {status==="active"?<Button className={status}>{status}</Button>:<Button className={status}>{status}</Button>}
-        {/* <button className={status}>{status}</button> */}
+        <Button className={status}>{status}</Button>
     </td>
      <td>
         <div className="flex">

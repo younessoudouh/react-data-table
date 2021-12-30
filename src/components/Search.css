@@ -3,8 +3,7 @@
     border-radius: 4px;
     padding: 10px;
     display: flex;
-    margin-left: 40px;
-    min-width: 30%;
+    width: 100%;
 }
 
 .search i {
@@ -17,7 +16,7 @@
     background: #DAE1EC;
     outline: none;
     color: var(--primary-color);
-    width: 100%;
+    width: 80%;
 }
 
 .search-input::placeholder {

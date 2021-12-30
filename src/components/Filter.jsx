@@ -1,23 +1,34 @@
 import React from "react";
+import { useState } from "react/cjs/react.development";
+import "./Filter.css";
 
 const Filter =()=>{
+    const [click,setClick]=useState(false);
+    const [checked,setChecked]=useState("Default");
+
+    const handleClick =()=> setClick(!click);
+    const handleChange=(e)=>{
+        console.log(e.target.value)
+        setChecked(e.target.value);
+    }
+
     return(
         <div className="filter">
-            <img src="..\images\filter-icon.png" alt="filter" id="filter" className="img-filter"/>
-                <div className="sort hide-element" id="sort-module">
+            <img src="/images/filter-icon.png" alt="filter" className="img-filter" onClick={handleClick}/>
+                <div className={click?"sort":"sort hide"}>
                     <div className="sort-by-name">
                         <h3 className="sort-head">sort by:</h3>
                         <div className="option-sort option">
                             <label htmlFor="sort-default">Default</label>
-                            <input type="radio" name="op" id="sort-default" value="Default" controled="true"/>
+                            <input type="radio" name="op" id="sort-default" value="Default" onChange={handleChange} checked={checked==="Default"}/>
                         </div>
                         <div className="option-sort option">
                             <label htmlFor="sort-first-name">Ascending</label>
-                            <input type="radio" name="op" id="sort-first-name" value="asc" controled="true"/>
+                            <input type="radio" name="op" id="sort-first-name" value="asc" onChange={handleChange} checked={checked==="asc"}/>
                         </div>
                         <div className="option-sort option">
                             <label htmlFor="sort-last-name">Descending</label>
-                            <input type="radio" name="op" id="sort-last-name" value="desc" controled="true"/>
+                            <input type="radio" name="op" id="sort-last-name" value="desc" onChange={handleChange} checked={checked==="desc"}/>
                         </div>
                     </div>
                     <div className="sort-by-status">
