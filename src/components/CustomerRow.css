@@ -1,0 +1,66 @@
+.positive {
+    color: var(--positive);
+}
+
+.negative {
+    color: var(--negative);
+}
+
+.customer-name {
+    color: var(--primary-color);
+    font-size: var(--font-primary);
+    font-weight: 600;
+    line-height: 17px;
+    white-space: nowrap;
+}
+
+.client-id {
+    color: var(--secondary-color);
+    font-size: var(--font-secondary);
+}
+
+.description {
+    color: var(--primary-color);
+    font-size: var(--font-primary);
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+}
+
+.inr {
+    color: var(--secondary-color);
+    font-size: var(--font-secondary);
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.fa-trash-alt {
+    color: #7D90B2;
+    font-size: 16px;
+}
+
+tbody tr {
+    cursor: pointer;
+}
+
+.flex {
+    display: flex;
+    gap: 12px;
+    color: #7D90B2;
+    font-size: 16px;
+    position: relative;
+}
+
+h3 {
+    text-align: center;
+    font-size: var(--font-primary);
+    color: var(--primary-color);
+    font-weight: 400;
+}
+
+.status{
+    text-align: center;
+}

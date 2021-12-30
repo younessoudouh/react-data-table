@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import './index.css';
+import Header from './components/Header';
+import Table from "./components/Table";
+import Footer from './components/Footer';
+import customers from "./Customers";
+import { useEffect, useState } from 'react';
 
 function App() {
+
+  const [customersData,setCustomersData]=useState(customers);
+
+  const countActiveCustomers=(customersList)=>{
+    return customersList.filter(customer=>customer.status==="active").length;
+  }
+  
+  const [activeCustomers,setActiveCustomers]=useState();
+
+  useEffect(()=>{
+    setActiveCustomers(countActiveCustomers(customers))
+  },[customersData])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <Header/>
+      <Table customers={customers} />
+      <Footer activeCustomers={activeCustomers} length={customers.length}/>
     </div>
   );
 }

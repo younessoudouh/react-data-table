@@ -1,0 +1,26 @@
+.search {
+    background: #DAE1EC;
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    margin-left: 40px;
+    min-width: 30%;
+}
+
+.search i {
+    margin-right: 10px;
+    color: #7D90B2;
+}
+
+.search-input {
+    border: 0;
+    background: #DAE1EC;
+    outline: none;
+    color: var(--primary-color);
+    width: 100%;
+}
+
+.search-input::placeholder {
+    font-size: var(--font-primary);
+    color: var(--primary-color);
+}

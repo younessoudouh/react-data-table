@@ -1,0 +1,32 @@
+footer {
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--secondary-color);
+}
+
+.right-side {
+    width: 40%;
+}
+
+footer ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fa-chevron-left {
+    margin-right: 15px;
+}
+
+.fa-chevron-right {
+    margin-left: 15px;
+}
+
+select {
+    border: 0;
+    color: #606F89;
+    font-size: var(--font-primary);
+    outline: none;
+}
