@@ -37,3 +37,8 @@ transform: scale(0.8);}
 .add i {
     margin-right: 10px;
 }
+
+.trash{
+    border: none;
+    background: transparent;
+}

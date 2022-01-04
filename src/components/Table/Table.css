@@ -38,7 +38,7 @@ table thead tr {
 }
 
 .sorting {
-    background-image: url(../images/sort_both.png);
+    background-image: url(../../../public/images/sort_both.png);
     background-position: right center;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -49,13 +49,13 @@ table thead tr {
     width: 190px;
 }
 
-.sort-asc {
-    background-image: url(../images/sort_both.png);
-}
+/* .sort-asc { */
+    /* background-image: url(../.././public/images/sort_asc.png); */
+/* } */
 
-.sort-desc {
-    background-image: url(../images/sort_both.png);
-}
+/* .sort-desc { */
+    /* background-image: url(../.././public/images/sort_desc.png); */
+/* } */
 
 tbody tr:hover {
     background: #DAE1EC;
