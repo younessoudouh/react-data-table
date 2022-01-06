@@ -1,9 +1,9 @@
 import React,{useEffect, useState} from "react";
 import "./Footer.css";
 
-const Footer = ({data}) => {
+const Footer = ({props}) => {
 
-let  [currentPage,rowsPerPage,setRowsPerPage,SetCurrentPage,customersToRender,customersReadyToRender] = data;
+let  [currentPage,rowsPerPage,setRowsPerPage,SetCurrentPage,customersToRender,customersReadyToRender] = props;
 
 const countActiveCustomers = (customersList) => {
     return customersList.filter(customer=>customer.status==="active").length;

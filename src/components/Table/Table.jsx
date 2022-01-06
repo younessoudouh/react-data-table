@@ -1,25 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Table.css";
 import CustomerRow from "../CustomerRow/CustomerRow";
 
-const Table = ({customers}) => {
+const Table = ({props}) => {
 
-let [customersReadyToRender ,customersToRender ,setCustomersData] = customers;
-
-const [isdeleted,setIsDeleted] = useState(false);
+let [customersData, customersReadyToRender,setCustomersData] = props;
 
 const setCustomersInLocalStorage = (customesList) => localStorage.setItem("customers", JSON.stringify(customesList));
 
 const deletCustomer = (customerId ,customers) => {
     if (window.confirm("are you sure")) {
-        setCustomersData(customers.filter(customer => customer.id != customerId));
-        setIsDeleted(!isdeleted)
+        setCustomersData(customers.filter(customer => customer.id !== customerId));
+        setCustomersInLocalStorage(customers.filter(customer => customer.id !== customerId));
     }
 }
-
-useEffect(() => {
-    setCustomersInLocalStorage(customersToRender);
-},[isdeleted])
 
     return (
         <table>
@@ -38,7 +32,7 @@ useEffect(() => {
                 </tr>
             </thead>
             <tbody>
-                {customersReadyToRender.map(customer=>(<CustomerRow key={customer.id} clickHandler={() => deletCustomer(customer.id,customersToRender)} customer={customer}/>))}
+                {customersReadyToRender.map(customer=>(<CustomerRow key={customer.id} clickHandler={() => deletCustomer(customer.id,customersData)} customer={customer}/>))}
             </tbody>
         </table>
   );

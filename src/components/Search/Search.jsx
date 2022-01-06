@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import "./Search.css";
 
-const Search = ({customers}) => {
+const Search = ({props}) => {
 
-let [customersData, setCustomersToRender, SetCurrentPage] = customers;
+let [customersData, setCustomersToRender, SetCurrentPage] = props;
 
 const [searchValue,setSearchValue] = useState("");
 
@@ -21,8 +21,8 @@ const handleChange = (e) => {
 }
 
 useEffect(() => {
-    setCustomersToRender(searchCustomers(customersData))
-},[searchValue])
+    setCustomersToRender(searchCustomers(customersData));
+},[searchValue,customersData])
 
  return(
         <div className="search">
