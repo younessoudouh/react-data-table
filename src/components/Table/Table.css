@@ -37,7 +37,7 @@ table thead tr {
     background-color: var(--stripes);
 }
 
-.sorting {
+.sort-default {
     background-image: url(../../../public/images/sort_both.png);
     background-position: right center;
     background-repeat: no-repeat;
@@ -47,17 +47,25 @@ table thead tr {
 .name-field {
     background-position: center center;
     width: 190px;
+    cursor: pointer;
 }
 
-/* .sort-asc { */
-    /* background-image: url(../.././public/images/sort_asc.png); */
-/* } */
+.sort-asc {
+    background-image: url(../../../public/images/sort_asc.png);
+    background-repeat: no-repeat;
+}
 
-/* .sort-desc { */
-    /* background-image: url(../.././public/images/sort_desc.png); */
-/* } */
+.sort-desc {
+    background-image: url(../../../public/images/sort_desc.png);
+    background-repeat: no-repeat;
+}
 
 tbody tr:hover {
     background: #DAE1EC;
     box-shadow: inset 2px 2px 3px #7D90B2, inset -2px -2px 3px #7D90B2;
+}
+
+.status{
+    background-position: right center;
+    cursor: pointer;
 }

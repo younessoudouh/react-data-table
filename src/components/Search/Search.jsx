@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Search.css";
 
 const Search = ({props}) => {
@@ -12,19 +12,20 @@ const searchCustomers = customersToSearchIn => {
     let searchedCustomers = customersToSearchIn.filter(customer => {
         return (customer.firstName.toLowerCase()).includes(valueToSearch) || customer.lastName.toLowerCase().includes(valueToSearch) || customer.description.toLowerCase().includes(valueToSearch);
     })
+    
     return searchedCustomers;
 }
 
 const handleChange = (e) => {
     setSearchValue(e.target.value);
-    SetCurrentPage(1)
+    SetCurrentPage(1);
 }
 
 useEffect(() => {
     setCustomersToRender(searchCustomers(customersData));
-},[searchValue,customersData])
+},[searchValue])
 
- return(
+    return(
         <div className="search">
             <i className="fas fa-search"></i>
             <input type="text" className="search-input"  placeholder="Search" onChange={handleChange}/>
