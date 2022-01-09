@@ -7,13 +7,13 @@ import "../index.css"
 
 function Main () {
 
-useEffect(() => {
-  (() => {
-    if (JSON.parse(localStorage.getItem("customers")) === null) {
-      localStorage.setItem("customers", JSON.stringify(customers));
-    }
-  })()
-}, [])
+// useEffect(() => {
+//   (() => {
+//     if (JSON.parse(localStorage.getItem("customers")) === null) {
+//       localStorage.setItem("customers", JSON.stringify(customers));
+//     }
+//   })()
+// }, [])
 
 const getCustomersFromLocalStorage = () => {
   return localStorage.getItem("customers") ? JSON.parse(localStorage.getItem("customers")) : [];
