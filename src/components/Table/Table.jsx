@@ -4,11 +4,11 @@ import CustomerRow from "../CustomerRow/CustomerRow";
 
 const Table = ({props}) => {
 
-let [customersData, customersReadyToRender, setCustomersToRender, setCustomersData] = props;
+let [customersData, customersReadyToRender, setSortedCustomers, setCustomersData] = props;
 const [sortByName, setSortByName] = useState("sort-default");
 const [sortByStatus, setSortByStatus] = useState("sort-default");
 
-const setCustomersInLocalStorage = (customesList) => localStorage.setItem("customers", JSON.stringify(customesList));
+const setCustomersInLocalStorage = (customersList) => localStorage.setItem("customers", JSON.stringify(customersList));
 
 const deletCustomer = (customerId ,customers) => {
     if (window.confirm("are you sure")) {
@@ -52,8 +52,8 @@ const sortCustomersByName = (customers, sortOrder) => {
 }
 
 useEffect(() => {
-    setCustomersToRender(sortCustomersByName(customersData,sortByName));
-}, [sortByName])
+    setSortedCustomers(sortCustomersByName(customersData,sortByName));
+}, [sortByName,customersData])
 
     return (
         <table>

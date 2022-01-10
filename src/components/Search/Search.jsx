@@ -3,14 +3,14 @@ import "./Search.css";
 
 const Search = ({props}) => {
 
-let [customersData, setCustomersToRender, SetCurrentPage] = props;
+let [sortedCustomers, setSearchedCustomers, SetCurrentPage] = props;
 
 const [searchValue,setSearchValue] = useState("");
 
 const searchCustomers = customersToSearchIn => {
     let valueToSearch = searchValue.toLowerCase();
     let searchedCustomers = customersToSearchIn.filter(customer => {
-        return (customer.firstName.toLowerCase()).includes(valueToSearch) || customer.lastName.toLowerCase().includes(valueToSearch) || customer.description.toLowerCase().includes(valueToSearch);
+        return (customer.firstName.toLowerCase().includes(valueToSearch) || customer.lastName.toLowerCase().includes(valueToSearch) || customer.description.toLowerCase().includes(valueToSearch) || customer.id.toString().includes(valueToSearch)) ;
     })
     
     return searchedCustomers;
@@ -22,8 +22,8 @@ const handleChange = (e) => {
 }
 
 useEffect(() => {
-    setCustomersToRender(searchCustomers(customersData));
-},[searchValue])
+    setSearchedCustomers(searchCustomers(sortedCustomers));
+},[searchValue,sortedCustomers])
 
     return(
         <div className="search">
