@@ -5,8 +5,7 @@ import customers from "../Customers";
 import React, {useEffect, useState } from 'react';
 import "../index.css"
 
-function Main () {
-
+const Main = () => {
 useEffect(() => {
   (() => {
     if (JSON.parse(localStorage.getItem("customers")) === null) {
@@ -19,18 +18,20 @@ const getCustomersFromLocalStorage = () => {
   return localStorage.getItem("customers") ? JSON.parse(localStorage.getItem("customers")) : [];
 };
 
-const [customersData,setCustomersData] = useState(() => getCustomersFromLocalStorage());
-const [rowsPerPage,setRowsPerPage] = useState(10);
-const [currentPage,SetCurrentPage] = useState(1);
-const [sortedCustomers,setSortedCustomers] = useState(customersData);
-const [searchedCustomers,setSearchedCustomers] = useState(customersData);
-const [customersToRender,setCustomersToRender] = useState(customersData);
+const [customersData, setCustomersData] = useState(() => getCustomersFromLocalStorage());
+const [rowsPerPage, setRowsPerPage] = useState(10);
+const [currentPage, SetCurrentPage] = useState(1);
+const [sortedCustomers, setSortedCustomers] = useState(customersData);
+const [searchedCustomers, setSearchedCustomers] = useState(customersData);
+const [customersToRender, setCustomersToRender] = useState(customersData);
 
 const customersReadyToRender = customersToRender.slice((currentPage - 1) * rowsPerPage, rowsPerPage * currentPage);
 
 useEffect(() => {
-  if(customersReadyToRender.length === 0 && currentPage !== 1) SetCurrentPage(previous => previous - 1);
-},[customersReadyToRender])
+  if(customersReadyToRender.length === 0 && currentPage !== 1) {
+     SetCurrentPage(previous => previous - 1);
+    }
+}, [customersReadyToRender])
 
 useEffect(() => {
   setCustomersToRender(searchedCustomers);
@@ -38,9 +39,27 @@ useEffect(() => {
 
   return (
     <div className="container">
-      <Header props={[sortedCustomers, setSearchedCustomers, SetCurrentPage]}/>
-      <Table props = {[customersData, customersReadyToRender,setSortedCustomers, setCustomersData]} />
-      {customersReadyToRender.length === 0 ? null : <Footer props = {[currentPage,rowsPerPage,setRowsPerPage,SetCurrentPage,customersToRender,customersReadyToRender]}/>}
+      <Header 
+        sortedCustomers={sortedCustomers}
+        setSearchedCustomers={setSearchedCustomers}
+        SetCurrentPage={SetCurrentPage} 
+      />
+      <Table
+        customersData={customersData} 
+        customersReadyToRender={customersReadyToRender} 
+        setSortedCustomers={setSortedCustomers} 
+        setCustomersData={setCustomersData} 
+      />
+      { customersReadyToRender.length === 0 ? null : 
+        <Footer
+          currentPage={currentPage} 
+          rowsPerPage={rowsPerPage} 
+          setRowsPerPage={setRowsPerPage} 
+          SetCurrentPage={SetCurrentPage} 
+          customersToRender={customersToRender} 
+          customersReadyToRender={customersReadyToRender}
+        />
+      }
     </div>
   );
 }

@@ -1,37 +1,39 @@
 import React,{useEffect, useState} from "react";
 import "./Footer.css";
 
-const Footer = ({props}) => {
+const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, SetCurrentPage, customersToRender, customersReadyToRender}) => {
+    const countActiveCustomers = (customersList) => {
+        return customersList.filter(customer=>customer.status==="active").length;
+    }  
 
-let  [currentPage,rowsPerPage,setRowsPerPage,SetCurrentPage,customersToRender,customersReadyToRender] = props;
+    const [activeCustomers, setActiveCustomers] = useState(countActiveCustomers(customersToRender));
 
-const countActiveCustomers = (customersList) => {
-    return customersList.filter(customer=>customer.status==="active").length;
-}  
+    const handleChange = (e) => {
+        const rows = parseInt(e.target.value);
+        SetCurrentPage(1);
+        setRowsPerPage(rows);
+    };
 
-const [activeCustomers,setActiveCustomers] = useState(countActiveCustomers(customersToRender));
+    const handlePreviousPage = () => {
+        SetCurrentPage(previous => previous > 1 ? previous-1 : previous);
+    };
 
-const handleChange = (e) => {
-    SetCurrentPage(1);
-    setRowsPerPage(parseInt(e.target.value));
-};
+    const handleNextPage = () => {
+        SetCurrentPage(previous => customersToRender.length > rowsPerPage * currentPage ? previous + 1 : previous);
+    };
 
-const handlePreviousPage = () => {
-    SetCurrentPage(previous => previous > 1 ? previous-1 : previous);
-};
-
-const handleNextPage = () => {
-    SetCurrentPage(previous => customersToRender.length > rowsPerPage * currentPage ? previous + 1 : previous);
-};
-
-useEffect(() => {
-    setActiveCustomers(countActiveCustomers(customersToRender));
-},[customersToRender])
+    useEffect(() => {
+        setActiveCustomers(countActiveCustomers(customersToRender));
+    },[customersToRender])
 
     return (
         <footer>
             <div className="active-customers">
-                active customers: <strong>{activeCustomers}</strong> / <small>{customersToRender.length}</small>
+                active customers:
+                {` `} 
+                <strong>{activeCustomers}</strong>
+                {` `} / {` `}
+                <small>{customersToRender.length}</small>
             </div>
             <div className="right-side">
                 <ul>
@@ -46,7 +48,13 @@ useEffect(() => {
                         </select>
                     </li>
                     <li id="displayed-customer">
-                        {currentPage === 1 ? 1 : rowsPerPage * currentPage - rowsPerPage + 1} - {rowsPerPage * currentPage - (rowsPerPage - customersReadyToRender.length)} of  {customersToRender.length}
+                        {
+                            `${currentPage === 1 ? 1 : rowsPerPage * currentPage - rowsPerPage + 1} 
+                            -
+                            ${rowsPerPage * currentPage - (rowsPerPage - customersReadyToRender.length)}
+                            of 
+                            ${customersToRender.length}`
+                        }
                     </li>
                     <li>
                         <i className="fas fa-chevron-left" onClick={handlePreviousPage}></i>
