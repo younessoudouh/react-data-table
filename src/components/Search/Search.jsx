@@ -1,36 +1,36 @@
 import React, { useEffect, useState } from "react";
 import "./Search.css";
 
-const Search = ({sortedCustomers,setSearchedCustomers, SetCurrentPage}) => {
+const Search = ({ sortedCustomers, setSearchedCustomers, SetCurrentPage }) => {
     const [searchValue, setSearchValue] = useState("");
 
     const searchCustomers = customersToSearchIn => {
-    let valueToSearch = searchValue.toLowerCase();
-    let searchedCustomers = customersToSearchIn.filter(customer => {
-        return (
-        customer.firstName.toLowerCase().includes(valueToSearch)
-        || customer.lastName.toLowerCase().includes(valueToSearch)
-        || customer.description.toLowerCase().includes(valueToSearch)
-        || customer.id.toString().includes(valueToSearch)
-        );
-    })
-    
-    return searchedCustomers;
-}
+        let valueToSearch = searchValue.toLowerCase();
+        let searchedCustomers = customersToSearchIn.filter(customer => {
+            return (
+                customer.firstName.toLowerCase().includes(valueToSearch)
+                || customer.lastName.toLowerCase().includes(valueToSearch)
+                || customer.description.toLowerCase().includes(valueToSearch)
+                || customer.id.toString().includes(valueToSearch)
+            );
+        })
 
-const handleChange = (e) => {
-    setSearchValue(e.target.value);
-    SetCurrentPage(1);
-}
+        return searchedCustomers;
+    }
 
-useEffect(() => {
-    setSearchedCustomers(searchCustomers(sortedCustomers));
-},[searchValue, sortedCustomers])
+    const handleChange = (e) => {
+        setSearchValue(e.target.value);
+        SetCurrentPage(1);
+    }
 
-    return(
+    useEffect(() => {
+        setSearchedCustomers(searchCustomers(sortedCustomers));
+    }, [searchValue, sortedCustomers])
+
+    return (
         <div className="search">
             <i className="fas fa-search"></i>
-            <input type="text" className="search-input"  placeholder="Search" onChange={handleChange}/>
+            <input type="text" className="search-input" placeholder="Search" onChange={handleChange} />
         </div>
     )
 }

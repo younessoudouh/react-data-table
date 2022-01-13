@@ -2,61 +2,61 @@ import Header from './Header/Header';
 import Table from "./Table/Table";
 import Footer from './Footer/Footer';
 import customers from "../Customers";
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../index.css"
 
 const Main = () => {
-useEffect(() => {
-  (() => {
-    if (JSON.parse(localStorage.getItem("customers")) === null) {
-      localStorage.setItem("customers", JSON.stringify(customers));
+  useEffect(() => {
+    (() => {
+      if (JSON.parse(localStorage.getItem("customers")) === null) {
+        localStorage.setItem("customers", JSON.stringify(customers));
+      }
+    })()
+  }, [])
+
+  const getCustomersFromLocalStorage = () => {
+    return localStorage.getItem("customers") ? JSON.parse(localStorage.getItem("customers")) : [];
+  };
+
+  const [customersData, setCustomersData] = useState(() => getCustomersFromLocalStorage());
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [currentPage, SetCurrentPage] = useState(1);
+  const [sortedCustomers, setSortedCustomers] = useState(customersData);
+  const [searchedCustomers, setSearchedCustomers] = useState(customersData);
+  const [customersToRender, setCustomersToRender] = useState(customersData);
+
+  const customersReadyToRender = customersToRender.slice((currentPage - 1) * rowsPerPage, rowsPerPage * currentPage);
+
+  useEffect(() => {
+    if (customersReadyToRender.length === 0 && currentPage !== 1) {
+      SetCurrentPage(previous => previous - 1);
     }
-  })()
-}, [])
+  }, [customersReadyToRender])
 
-const getCustomersFromLocalStorage = () => {
-  return localStorage.getItem("customers") ? JSON.parse(localStorage.getItem("customers")) : [];
-};
-
-const [customersData, setCustomersData] = useState(() => getCustomersFromLocalStorage());
-const [rowsPerPage, setRowsPerPage] = useState(10);
-const [currentPage, SetCurrentPage] = useState(1);
-const [sortedCustomers, setSortedCustomers] = useState(customersData);
-const [searchedCustomers, setSearchedCustomers] = useState(customersData);
-const [customersToRender, setCustomersToRender] = useState(customersData);
-
-const customersReadyToRender = customersToRender.slice((currentPage - 1) * rowsPerPage, rowsPerPage * currentPage);
-
-useEffect(() => {
-  if(customersReadyToRender.length === 0 && currentPage !== 1) {
-     SetCurrentPage(previous => previous - 1);
-    }
-}, [customersReadyToRender])
-
-useEffect(() => {
-  setCustomersToRender(searchedCustomers);
-}, [searchedCustomers])
+  useEffect(() => {
+    setCustomersToRender(searchedCustomers);
+  }, [searchedCustomers])
 
   return (
     <div className="container">
-      <Header 
+      <Header
         sortedCustomers={sortedCustomers}
         setSearchedCustomers={setSearchedCustomers}
-        SetCurrentPage={SetCurrentPage} 
+        SetCurrentPage={SetCurrentPage}
       />
       <Table
-        customersData={customersData} 
-        customersReadyToRender={customersReadyToRender} 
-        setSortedCustomers={setSortedCustomers} 
-        setCustomersData={setCustomersData} 
+        customersData={customersData}
+        customersReadyToRender={customersReadyToRender}
+        setSortedCustomers={setSortedCustomers}
+        setCustomersData={setCustomersData}
       />
-      { customersReadyToRender.length === 0 ? null : 
+      {customersReadyToRender.length === 0 ? null :
         <Footer
-          currentPage={currentPage} 
-          rowsPerPage={rowsPerPage} 
-          setRowsPerPage={setRowsPerPage} 
-          SetCurrentPage={SetCurrentPage} 
-          customersToRender={customersToRender} 
+          currentPage={currentPage}
+          rowsPerPage={rowsPerPage}
+          setRowsPerPage={setRowsPerPage}
+          SetCurrentPage={SetCurrentPage}
+          customersToRender={customersToRender}
           customersReadyToRender={customersReadyToRender}
         />
       }

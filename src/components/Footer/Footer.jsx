@@ -1,10 +1,10 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./Footer.css";
 
-const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, SetCurrentPage, customersToRender, customersReadyToRender}) => {
+const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, SetCurrentPage, customersToRender, customersReadyToRender }) => {
     const countActiveCustomers = (customersList) => {
-        return customersList.filter(customer=>customer.status==="active").length;
-    }  
+        return customersList.filter(customer => customer.status === "active").length;
+    }
 
     const [activeCustomers, setActiveCustomers] = useState(countActiveCustomers(customersToRender));
 
@@ -15,7 +15,7 @@ const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, SetCurrentPage, cust
     };
 
     const handlePreviousPage = () => {
-        SetCurrentPage(previous => previous > 1 ? previous-1 : previous);
+        SetCurrentPage(previous => previous > 1 ? previous - 1 : previous);
     };
 
     const handleNextPage = () => {
@@ -24,13 +24,13 @@ const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, SetCurrentPage, cust
 
     useEffect(() => {
         setActiveCustomers(countActiveCustomers(customersToRender));
-    },[customersToRender])
+    }, [customersToRender])
 
     return (
         <footer>
             <div className="active-customers">
                 active customers:
-                {` `} 
+                {` `}
                 <strong>{activeCustomers}</strong>
                 {` `} / {` `}
                 <small>{customersToRender.length}</small>
@@ -41,7 +41,7 @@ const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, SetCurrentPage, cust
                         Rows per page:
                         <select onChange={handleChange}>
                             <option value="5">5</option>
-                            <option value="10">10</option>
+                            <option value="10" selected>10</option>
                             <option value="15">15</option>
                             <option value="20">20</option>
                             <option value="25">25</option>

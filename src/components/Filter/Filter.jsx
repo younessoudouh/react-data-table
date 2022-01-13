@@ -1,16 +1,16 @@
-import React,{useState} from "react";
-import FilterModule from "../FilterModule/FilterModule"
+import React, { useState } from "react";
+import FilterModal from "../FilterModal/FilterModal"
 import "./Filter.css";
 
-const Filter =()=>{
-    const [clicked,setClicked]=useState(false);
+const Filter = () => {
+    const [clicked, setClicked] = useState(false);
 
-    const handleClick =()=> setClicked(!clicked);
+    const handleClick = () => setClicked(!clicked);
 
-    return(
+    return (
         <div className="filter">
-            <img src="/images/filter-icon.png" alt="filter" className="img-filter" onClick={handleClick}/>
-                {clicked ? <FilterModule/> : null}
+            <img src="/images/filter-icon.png" alt="filter" className="img-filter" onClick={handleClick} />
+            {clicked ? <FilterModal /> : null}
         </div>
     )
 }

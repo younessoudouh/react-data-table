@@ -2,11 +2,11 @@ import React from "react";
 import "./CustomerRow.css";
 import Button from "../Button/Button";
 
-const CustomerRow = ({customer:{ firstName, lastName, description, rate, balance, deposit, status, id, currency },clickHandler}) => {
+const CustomerRow = ({ customer: { firstName, lastName, description, rate, balance, deposit, status, id, currency }, clickHandler }) => {
     return (
         <tr>
             <td className="relative">
-                <input type="checkbox" className="check"/>
+                <input type="checkbox" className="check" />
             </td>
             <td>
                 <h5 className="customer-name">{firstName} {lastName}</h5>
@@ -20,7 +20,7 @@ const CustomerRow = ({customer:{ firstName, lastName, description, rate, balance
                 <h4 className="inr">{currency}</h4>
             </td>
             <td>
-                <h3 className={balance>0?"positive":"negative"}>{balance}</h3>
+                <h3 className={balance > 0 ? "positive" : "negative"}>{balance}</h3>
                 <h4 className="inr">{currency}</h4>
             </td>
             <td>
@@ -33,14 +33,14 @@ const CustomerRow = ({customer:{ firstName, lastName, description, rate, balance
             <td>
                 <div className="flex">
                     <i className="fas fa-pen"></i>
-                    <Button clickHandler = {clickHandler} className = "trash">
+                    <Button clickHandler={clickHandler} className="trash">
                         <i className="far fa-trash-alt"></i>
                     </Button>
                     <i className="fas fa-ellipsis-v" ></i>
                 </div>
-            </td>    
+            </td>
         </tr>
-  );
+    );
 }
 
 export default CustomerRow;

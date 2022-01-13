@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./Table.css";
 import CustomerRow from "../CustomerRow/CustomerRow";
 
-const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setCustomersData}) => {
-    const [sort, setSort] = useState({name:"sort-default", status:"sort-default"});
+const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setCustomersData }) => {
+    const [sort, setSort] = useState({ name: "sort-default", status: "sort-default" });
 
     const setCustomersInLocalStorage = (customersList) => localStorage.setItem("customers", JSON.stringify(customersList));
 
@@ -15,22 +15,22 @@ const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setC
     }
 
     const handleStatusClick = () => {
-        if(sort.status === "sort-default"){
-            setSort({name:"sort-default", status:"sort-asc"});
-        }else if(sort.status === "sort-asc"){
-            setSort({name:"sort-default", status:"sort-desc"});
-        }else{
-            setSort({name:"sort-default", status:"sort-default"});
+        if (sort.status === "sort-default") {
+            setSort({ name: "sort-default", status: "sort-asc" });
+        } else if (sort.status === "sort-asc") {
+            setSort({ name: "sort-default", status: "sort-desc" });
+        } else {
+            setSort({ name: "sort-default", status: "sort-default" });
         }
     }
 
     const handleNameClick = () => {
-        if(sort.name === "sort-default"){
-            setSort({name:"sort-asc", status:"sort-default"});
-        }else if(sort.name === "sort-asc"){
-            setSort({name:"sort-desc", status:"sort-default"});
-        }else{
-            setSort({name:"sort-default", status:"sort-default"});
+        if (sort.name === "sort-default") {
+            setSort({ name: "sort-asc", status: "sort-default" });
+        } else if (sort.name === "sort-asc") {
+            setSort({ name: "sort-desc", status: "sort-default" });
+        } else {
+            setSort({ name: "sort-default", status: "sort-default" });
         }
     }
 
@@ -53,7 +53,7 @@ const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setC
             return (customers.filter((customer) => customer.status === "active"))
                 .concat(customers.filter((customer) => customer.status === "inactive"))
         }
-    
+
         if (sortOrder.status === "sort-desc") {
             return (customers.filter((customer) => customer.status === "inactive"))
                 .concat(customers.filter((customer) => customer.status === "active"))
@@ -62,12 +62,12 @@ const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setC
     }
 
     useEffect(() => {
-        if(sort.name !== "sort-default"){
-            setSortedCustomers(sortCustomersByName(customersData,sort));
-        }else if(sort.status !== "sort-default"){
-            setSortedCustomers(sortCustomersByStatus(customersData,sort));
-        }else{
-            setSortedCustomers(sortCustomersByStatus(customersData,sort));
+        if (sort.name !== "sort-default") {
+            setSortedCustomers(sortCustomersByName(customersData, sort));
+        } else if (sort.status !== "sort-default") {
+            setSortedCustomers(sortCustomersByStatus(customersData, sort));
+        } else {
+            setSortedCustomers(sortCustomersByStatus(customersData, sort));
         }
     }, [sort, customersData])
 
@@ -76,23 +76,23 @@ const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setC
         <table>
             <thead>
                 <tr>
-                    <th><input type = "checkbox"/></th>
-                    <th className = {`name-field ${sort.name}`} onClick = {handleNameClick}>name</th>
+                    <th><input type="checkbox" /></th>
+                    <th className={`name-field ${sort.name}`} onClick={handleNameClick}>name</th>
                     <th> description</th>
                     <th>rate</th>
                     <th>balance</th>
                     <th>deposit</th>
-                    <th className = {`status ${sort.status}`} onClick = {handleStatusClick}>status</th>
+                    <th className={`status ${sort.status}`} onClick={handleStatusClick}>status</th>
                     <th>
                         <i className="fas fa-ellipsis-h"></i>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                {customersReadyToRender.map(customer=>(<CustomerRow key={customer.id} clickHandler={() => deletCustomer(customer.id, customersData)} customer={customer}/>))}
+                {customersReadyToRender.map(customer => (<CustomerRow key={customer.id} clickHandler={() => deletCustomer(customer.id, customersData)} customer={customer} />))}
             </tbody>
         </table>
-  );
+    );
 }
 
 export default Table;
