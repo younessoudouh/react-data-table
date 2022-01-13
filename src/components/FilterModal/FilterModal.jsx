@@ -4,7 +4,6 @@ const FilterModule = () => {
     const [sort, setSort] = useState("Default");
 
     const handleChange = (e) => {
-        console.log(e.target.value)
         setSort(e.target.value);
     }
     return (
