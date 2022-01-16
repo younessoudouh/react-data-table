@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Search.css";
 
-const Search = ({ sortedCustomers, setSearchedCustomers, SetCurrentPage }) => {
+const Search = ({ sortedCustomers, setSearchedCustomers, setCurrentPage }) => {
     const [searchValue, setSearchValue] = useState("");
 
     const searchCustomers = customersToSearchIn => {
@@ -20,7 +20,7 @@ const Search = ({ sortedCustomers, setSearchedCustomers, SetCurrentPage }) => {
 
     const handleChange = (e) => {
         setSearchValue(e.target.value);
-        SetCurrentPage(1);
+        setCurrentPage(1);
     }
 
     useEffect(() => {

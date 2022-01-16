@@ -1,16 +1,21 @@
 import React, { useState } from "react";
-import FilterModal from "../FilterModal/FilterModal"
+import FilterPopUp from "../FilterPopUp/FilterPopUp"
 import "./Filter.css";
 
-const Filter = () => {
-    const [clicked, setClicked] = useState(false);
+const Filter = ({ sort, setSort }) => {
+    const [filterClicked, setFilterClicked] = useState(false);
 
-    const handleClick = () => setClicked(!clicked);
+    const handleClick = (e) => {
+        e.stopPropagation();
+        setFilterClicked(!filterClicked)
+    };
+
+    window.addEventListener("click", () => setFilterClicked(false));
 
     return (
         <div className="filter">
             <img src="/images/filter-icon.png" alt="filter" className="img-filter" onClick={handleClick} />
-            {clicked ? <FilterModal /> : null}
+            {filterClicked && <FilterPopUp sort={sort} setSort={setSort} />}
         </div>
     )
 }

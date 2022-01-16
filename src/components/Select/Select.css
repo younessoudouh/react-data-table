@@ -1,0 +1,6 @@
+select {
+    border: 0;
+    color: #606F89;
+    font-size: var(--font-primary);
+    outline: none;
+}

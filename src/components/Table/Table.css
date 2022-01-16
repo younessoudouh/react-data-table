@@ -32,7 +32,6 @@ tr th:last-of-type {
     text-align: center;
 }
 
-
 table thead tr {
     background-color: var(--stripes);
 }
@@ -50,12 +49,14 @@ table thead tr {
     cursor: pointer;
 }
 
-.sort-asc {
+.sort-asc,
+.sort-active {
     background-image: url(../../../public/images/sort_asc.png);
     background-repeat: no-repeat;
 }
 
-.sort-desc {
+.sort-desc,
+.sort-inactive {
     background-image: url(../../../public/images/sort_desc.png);
     background-repeat: no-repeat;
 }
@@ -65,7 +66,7 @@ tbody tr:hover {
     box-shadow: inset 2px 2px 3px #7D90B2, inset -2px -2px 3px #7D90B2;
 }
 
-.status{
+.status {
     background-position: right center;
     cursor: pointer;
 }

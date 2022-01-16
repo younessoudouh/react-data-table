@@ -2,7 +2,7 @@ import React from "react";
 import "./CustomerRow.css";
 import Button from "../Button/Button";
 
-const CustomerRow = ({ customer: { firstName, lastName, description, rate, balance, deposit, status, id, currency }, clickHandler }) => {
+const CustomerRow = ({ firstName, lastName, description, rate, balance, deposit, status, id, currency, clickHandler }) => {
     return (
         <tr>
             <td className="relative">

@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from "react";
 import "./Footer.css";
+import Select from "../Select/Select";
 
-const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, SetCurrentPage, customersToRender, customersReadyToRender }) => {
+const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, setCurrentPage, customersToRender, customersReadyToRender }) => {
     const countActiveCustomers = (customersList) => {
         return customersList.filter(customer => customer.status === "active").length;
     }
 
     const [activeCustomers, setActiveCustomers] = useState(countActiveCustomers(customersToRender));
+    const [slectedValue, setSlectedValue] = useState(10)
 
     const handleChange = (e) => {
         const rows = parseInt(e.target.value);
-        SetCurrentPage(1);
+        setSlectedValue(rows)
+        setCurrentPage(1);
         setRowsPerPage(rows);
     };
 
     const handlePreviousPage = () => {
-        SetCurrentPage(previous => previous > 1 ? previous - 1 : previous);
+        setCurrentPage(previous => previous > 1 ? previous - 1 : previous);
     };
 
     const handleNextPage = () => {
-        SetCurrentPage(previous => customersToRender.length > rowsPerPage * currentPage ? previous + 1 : previous);
+        setCurrentPage(previous => customersToRender.length > rowsPerPage * currentPage ? previous + 1 : previous);
     };
 
     useEffect(() => {
@@ -39,13 +42,11 @@ const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, SetCurrentPage, cust
                 <ul>
                     <li className="rows-page">
                         Rows per page:
-                        <select onChange={handleChange}>
-                            <option value="5">5</option>
-                            <option value="10" selected>10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="25">25</option>
-                        </select>
+                        <Select
+                            options={[5, 10, 15, 20, 25]}
+                            slectedValue={slectedValue}
+                            chanchHandler={handleChange}
+                        />
                     </li>
                     <li id="displayed-customer">
                         {

@@ -18,16 +18,17 @@ const Main = () => {
 
   const [customersData, setCustomersData] = useState(() => getCustomersFromLocalStorage());
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [currentPage, SetCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [sortedCustomers, setSortedCustomers] = useState(customersData);
   const [searchedCustomers, setSearchedCustomers] = useState(customersData);
   const [customersToRender, setCustomersToRender] = useState(customersData);
+  const [sort, setSort] = useState({ name: "sort-default", status: "sort-default" });
 
   const customersReadyToRender = customersToRender.slice((currentPage - 1) * rowsPerPage, rowsPerPage * currentPage);
 
   useEffect(() => {
     if (customersReadyToRender.length === 0 && currentPage !== 1) {
-      SetCurrentPage(previous => previous - 1);
+      setCurrentPage(previous => previous - 1);
     }
   }, [customersReadyToRender])
 
@@ -40,20 +41,24 @@ const Main = () => {
       <Header
         sortedCustomers={sortedCustomers}
         setSearchedCustomers={setSearchedCustomers}
-        SetCurrentPage={SetCurrentPage}
+        setCurrentPage={setCurrentPage}
+        sort={sort}
+        setSort={setSort}
       />
       <Table
         customersData={customersData}
         customersReadyToRender={customersReadyToRender}
         setSortedCustomers={setSortedCustomers}
         setCustomersData={setCustomersData}
+        sort={sort}
+        setSort={setSort}
       />
       {customersReadyToRender.length === 0 ? null :
         <Footer
           currentPage={currentPage}
           rowsPerPage={rowsPerPage}
           setRowsPerPage={setRowsPerPage}
-          SetCurrentPage={SetCurrentPage}
+          setCurrentPage={setCurrentPage}
           customersToRender={customersToRender}
           customersReadyToRender={customersReadyToRender}
         />

@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./Table.css";
 import CustomerRow from "../CustomerRow/CustomerRow";
 
-const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setCustomersData }) => {
-    const [sort, setSort] = useState({ name: "sort-default", status: "sort-default" });
-
+const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setCustomersData, sort, setSort }) => {
     const setCustomersInLocalStorage = (customersList) => localStorage.setItem("customers", JSON.stringify(customersList));
 
     const deletCustomer = (customerId, customers) => {
@@ -16,21 +14,21 @@ const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setC
 
     const handleStatusClick = () => {
         if (sort.status === "sort-default") {
-            setSort({ name: "sort-default", status: "sort-asc" });
-        } else if (sort.status === "sort-asc") {
-            setSort({ name: "sort-default", status: "sort-desc" });
+            setSort(prev => prev = { ...prev, status: "sort-active" });
+        } else if (sort.status === "sort-active") {
+            setSort(prev => prev = { ...prev, status: "sort-inactive" });
         } else {
-            setSort({ name: "sort-default", status: "sort-default" });
+            setSort(prev => prev = { ...prev, status: "sort-default" });
         }
     }
 
     const handleNameClick = () => {
         if (sort.name === "sort-default") {
-            setSort({ name: "sort-asc", status: "sort-default" });
+            setSort(prev => prev = { ...prev, name: "sort-asc" });
         } else if (sort.name === "sort-asc") {
-            setSort({ name: "sort-desc", status: "sort-default" });
+            setSort(prev => prev = { ...prev, name: "sort-desc" });
         } else {
-            setSort({ name: "sort-default", status: "sort-default" });
+            setSort(prev => prev = { ...prev, name: "sort-default" });
         }
     }
 
@@ -49,28 +47,29 @@ const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setC
     }
 
     const sortCustomersByStatus = (customers, sortOrder) => {
-        if (sortOrder.status === "sort-asc") {
+        if (sortOrder.status === "sort-active") {
             return (customers.filter((customer) => customer.status === "active"))
                 .concat(customers.filter((customer) => customer.status === "inactive"))
         }
 
-        if (sortOrder.status === "sort-desc") {
+        if (sortOrder.status === "sort-inactive") {
             return (customers.filter((customer) => customer.status === "inactive"))
                 .concat(customers.filter((customer) => customer.status === "active"))
         }
         return customers;
     }
 
-    useEffect(() => {
-        if (sort.name !== "sort-default") {
-            setSortedCustomers(sortCustomersByName(customersData, sort));
-        } else if (sort.status !== "sort-default") {
-            setSortedCustomers(sortCustomersByStatus(customersData, sort));
-        } else {
-            setSortedCustomers(sortCustomersByStatus(customersData, sort));
-        }
-    }, [sort, customersData])
+    const sortCombined = (customers, sortOrders) => {
+        if (sortOrders.name === "sort-default" && sortOrders.status === "sort-default") return customers;
 
+        let sortedByName = sortCustomersByName(customers, sortOrders);
+
+        return sortCustomersByStatus(sortedByName, sortOrders);
+    }
+
+    useEffect(() => {
+        setSortedCustomers(sortCombined(customersData, sort));
+    }, [sort, customersData])
 
     return (
         <table>
@@ -89,7 +88,7 @@ const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setC
                 </tr>
             </thead>
             <tbody>
-                {customersReadyToRender.map(customer => (<CustomerRow key={customer.id} clickHandler={() => deletCustomer(customer.id, customersData)} customer={customer} />))}
+                {customersReadyToRender.map(customer => (<CustomerRow key={customer.id} clickHandler={() => deletCustomer(customer.id, customersData)} {...customer} />))}
             </tbody>
         </table>
     );
