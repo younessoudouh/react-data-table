@@ -1,18 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Footer.css";
 import Select from "../Select/Select";
 
-const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, setCurrentPage, customersToRender, customersReadyToRender }) => {
-    const countActiveCustomers = (customersList) => {
-        return customersList.filter(customer => customer.status === "active").length;
-    }
-
-    const [activeCustomers, setActiveCustomers] = useState(countActiveCustomers(customersToRender));
-    const [slectedValue, setSlectedValue] = useState(10)
-
-    const handleChange = (e) => {
+const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, setCurrentPage, allCustomersCount, customersReadyToRender, activeCustomersCount }) => {
+    const handleRowsChange = (e) => {
         const rows = parseInt(e.target.value);
-        setSlectedValue(rows)
         setCurrentPage(1);
         setRowsPerPage(rows);
     };
@@ -22,21 +14,17 @@ const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, setCurrentPage, cust
     };
 
     const handleNextPage = () => {
-        setCurrentPage(previous => customersToRender.length > rowsPerPage * currentPage ? previous + 1 : previous);
+        setCurrentPage(previous => allCustomersCount > rowsPerPage * currentPage ? previous + 1 : previous);
     };
-
-    useEffect(() => {
-        setActiveCustomers(countActiveCustomers(customersToRender));
-    }, [customersToRender])
 
     return (
         <footer>
             <div className="active-customers">
                 active customers:
                 {` `}
-                <strong>{activeCustomers}</strong>
+                <strong>{activeCustomersCount}</strong>
                 {` `} / {` `}
-                <small>{customersToRender.length}</small>
+                <small>{allCustomersCount}</small>
             </div>
             <div className="right-side">
                 <ul>
@@ -44,8 +32,8 @@ const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, setCurrentPage, cust
                         Rows per page:
                         <Select
                             options={[5, 10, 15, 20, 25]}
-                            slectedValue={slectedValue}
-                            chanchHandler={handleChange}
+                            rowsPerPage={rowsPerPage}
+                            chanchHandler={handleRowsChange}
                         />
                     </li>
                     <li id="displayed-customer">
@@ -54,7 +42,7 @@ const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, setCurrentPage, cust
                             -
                             ${rowsPerPage * currentPage - (rowsPerPage - customersReadyToRender.length)}
                             of 
-                            ${customersToRender.length}`
+                            ${allCustomersCount}`
                         }
                     </li>
                     <li>

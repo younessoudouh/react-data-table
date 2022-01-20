@@ -9,15 +9,9 @@
     pointer-events: visible;
 }
 
-.sort h3 {
+.sort-title {
     margin-bottom: 10px;
     text-align: left;
-}
-
-.option-sort {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .sort-by-name {
@@ -25,11 +19,17 @@
     border-bottom: 1px solid #ebf2ff;
 }
 
+.sort-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .sort-by-status {
     padding-top: 10px;
 }
 
-input[type='radio'],
-label {
+.sort-input,
+.sort-label {
     cursor: pointer;
 }

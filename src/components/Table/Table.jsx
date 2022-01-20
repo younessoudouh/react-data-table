@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Table.css";
 import CustomerRow from "../CustomerRow/CustomerRow";
 
-const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setCustomersData, sort, setSort }) => {
+const Table = ({ customersData, customersReadyToRender, setCustomersData, sort, setSort }) => {
     const setCustomersInLocalStorage = (customersList) => localStorage.setItem("customers", JSON.stringify(customersList));
 
     const deletCustomer = (customerId, customers) => {
@@ -14,62 +14,23 @@ const Table = ({ customersData, customersReadyToRender, setSortedCustomers, setC
 
     const handleStatusClick = () => {
         if (sort.status === "sort-default") {
-            setSort(prev => prev = { ...prev, status: "sort-active" });
+            setSort(previous => ({ ...previous, status: "sort-active" }));
         } else if (sort.status === "sort-active") {
-            setSort(prev => prev = { ...prev, status: "sort-inactive" });
+            setSort(previous => ({ ...previous, status: "sort-inactive" }));
         } else {
-            setSort(prev => prev = { ...prev, status: "sort-default" });
+            setSort(previous => ({ ...previous, status: "sort-default" }));
         }
     }
 
     const handleNameClick = () => {
         if (sort.name === "sort-default") {
-            setSort(prev => prev = { ...prev, name: "sort-asc" });
+            setSort(previous => ({ ...previous, name: "sort-asc" }));
         } else if (sort.name === "sort-asc") {
-            setSort(prev => prev = { ...prev, name: "sort-desc" });
+            setSort(previous => ({ ...previous, name: "sort-desc" }));
         } else {
-            setSort(prev => prev = { ...prev, name: "sort-default" });
+            setSort(previous => ({ ...previous, name: "sort-default" }));
         }
     }
-
-    const sortCustomersByName = (customers, sortOrder) => {
-        let customersToSort = customers.slice();
-
-        if (sortOrder.name === "sort-asc") {
-            return customersToSort.sort((customer1, customer2) => (customer1.firstName > customer2.firstName) ? 1 : -1);
-        }
-
-        if (sortOrder.name === "sort-desc") {
-            return customersToSort.sort((customer1, customer2) => (customer1.firstName > customer2.firstName) ? -1 : 1);
-        }
-
-        return customersToSort;
-    }
-
-    const sortCustomersByStatus = (customers, sortOrder) => {
-        if (sortOrder.status === "sort-active") {
-            return (customers.filter((customer) => customer.status === "active"))
-                .concat(customers.filter((customer) => customer.status === "inactive"))
-        }
-
-        if (sortOrder.status === "sort-inactive") {
-            return (customers.filter((customer) => customer.status === "inactive"))
-                .concat(customers.filter((customer) => customer.status === "active"))
-        }
-        return customers;
-    }
-
-    const sortCombined = (customers, sortOrders) => {
-        if (sortOrders.name === "sort-default" && sortOrders.status === "sort-default") return customers;
-
-        let sortedByName = sortCustomersByName(customers, sortOrders);
-
-        return sortCustomersByStatus(sortedByName, sortOrders);
-    }
-
-    useEffect(() => {
-        setSortedCustomers(sortCombined(customersData, sort));
-    }, [sort, customersData])
 
     return (
         <table>

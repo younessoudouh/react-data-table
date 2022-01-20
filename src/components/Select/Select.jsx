@@ -1,9 +1,9 @@
 import React from "react";
 import "./Select.css";
 
-const Select = ({ slectedValue, chanchHandler, options }) => {
+const Select = ({ rowsPerPage, chanchHandler, options }) => {
     return (
-        <select value={slectedValue} onChange={chanchHandler}>
+        <select value={rowsPerPage} onChange={chanchHandler}>
             {options.map((option, index) => <option key={index} value={option}>{option}</option>)}
         </select>
     )

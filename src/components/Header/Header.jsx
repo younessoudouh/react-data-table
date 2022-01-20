@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import Filter from "../Filter/Filter";
 import "./Header.css"
 
-const Header = ({ sortedCustomers, setSearchedCustomers, setCurrentPage, sort, setSort }) => {
+const Header = ({ searchValue, setSearchValue, setCurrentPage, sort, setSort }) => {
     return (
         <header>
             <div className="filter-wrap">
@@ -13,8 +13,8 @@ const Header = ({ sortedCustomers, setSearchedCustomers, setCurrentPage, sort, s
                     setSort={setSort}
                 />
                 <Search
-                    sortedCustomers={sortedCustomers}
-                    setSearchedCustomers={setSearchedCustomers}
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
                     setCurrentPage={setCurrentPage}
                 />
             </div>

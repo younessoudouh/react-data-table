@@ -1,50 +1,92 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./FilterPopUp.css"
+import Input from "../Input/Input";
 
-const FilterPopUp = ({ sort, setSort }) => {
-    const handleClick = (e) => {
-        e.stopPropagation()
+const FilterPopUp = ({ sort, setSort, filterOpen, setFilterOpen }) => {
+    const stopPropagationForPopUp = (event) => {
+        event.stopPropagation()
     }
 
-    const handleSortByNameChange = (e) => {
-        setSort(prev => prev = { ...prev, name: e.target.value });
+    const handleSortByNameChange = (event) => {
+        setSort(previous => ({ ...previous, name: event.target.value }));
     }
 
-    const handleSortByStatusChange = (e) => {
-        setSort(prev => prev = { ...prev, status: e.target.value });
+    const handleSortByStatusChange = (event) => {
+        setSort(previous => ({ ...previous, status: event.target.value }));
     }
+
+    const closeFilter = () => {
+        setFilterOpen(false);
+    }
+
+    useEffect(() => {
+        window.addEventListener("click", closeFilter);
+        return () => {
+            window.removeEventListener("click", closeFilter);
+        }
+    }, [filterOpen])
 
     return (
-        <div onClick={handleClick} className="sort">
+        <div onClick={stopPropagationForPopUp} className="sort">
             <div className="sort-by-name">
-                <h3 className="sort-head">sort by:</h3>
-                <div className="option-sort option">
-                    <label htmlFor="sort-default">Default</label>
-                    <input type="radio" name="op" id="sort-default" value="sort-default" onChange={handleSortByNameChange} checked={sort.name === "sort-default"} />
-                </div>
-                <div className="option-sort option">
-                    <label htmlFor="sort-first-name">Ascending</label>
-                    <input type="radio" name="op" id="sort-first-name" value="sort-asc" onChange={handleSortByNameChange} checked={sort.name === "sort-asc"} />
-                </div>
-                <div className="option-sort option">
-                    <label htmlFor="sort-last-name">Descending</label>
-                    <input type="radio" name="op" id="sort-last-name" value="sort-desc" onChange={handleSortByNameChange} checked={sort.name === "sort-desc"} />
-                </div>
+                <h3 className="sort-title">sort by:</h3>
+                <Input
+                    htmlFor="sort-default"
+                    type="radio"
+                    id="sort-default"
+                    value="sort-default"
+                    changeHandler={handleSortByNameChange}
+                    checked={sort.name === "sort-default"}
+                    text="Default"
+                />
+                <Input
+                    htmlFor="sort-first-name"
+                    type="radio"
+                    id="sort-first-name"
+                    value="sort-asc"
+                    changeHandler={handleSortByNameChange}
+                    checked={sort.name === "sort-asc"}
+                    text="Ascending"
+                />
+                <Input
+                    htmlFor="sort-last-name"
+                    type="radio"
+                    id="sort-last-name"
+                    value="sort-desc"
+                    changeHandler={handleSortByNameChange}
+                    checked={sort.name === "sort-desc"}
+                    text="Descending"
+                />
             </div>
             <div className="sort-by-status">
-                <h3 className="sort-head">Users:</h3>
-                <div className="option-sort option">
-                    <label htmlFor="sort-All">All</label>
-                    <input type="radio" name="user" id="sort-All" value="sort-default" onChange={handleSortByStatusChange} checked={sort.status === "sort-default"} />
-                </div>
-                <div className="option-sort option">
-                    <label htmlFor="sort-Active">Active</label>
-                    <input type="radio" name="user" id="sort-Active" value="sort-active" onChange={handleSortByStatusChange} checked={sort.status === "sort-active"} />
-                </div>
-                <div className="option-sort option">
-                    <label htmlFor="sort-inactive">Inactive</label>
-                    <input type="radio" name="user" id="sort-inactive" value="sort-inactive" onChange={handleSortByStatusChange} checked={sort.status === "sort-inactive"} />
-                </div>
+                <h3 className="sort-title">Users:</h3>
+                <Input
+                    htmlFor="sort-All"
+                    type="radio"
+                    id="sort-All"
+                    value="sort-default"
+                    changeHandler={handleSortByStatusChange}
+                    checked={sort.status === "sort-default"}
+                    text="All"
+                />
+                <Input
+                    htmlFor="sort-active"
+                    type="radio"
+                    id="sort-active"
+                    value="sort-active"
+                    changeHandler={handleSortByStatusChange}
+                    checked={sort.status === "sort-active"}
+                    text="Active"
+                />
+                <Input
+                    htmlFor="sort-inactive"
+                    type="radio"
+                    id="sort-inactive"
+                    value="sort-inactive"
+                    changeHandler={handleSortByStatusChange}
+                    checked={sort.status === "sort-inactive"}
+                    text="Inactive"
+                />
             </div>
         </div>
     )

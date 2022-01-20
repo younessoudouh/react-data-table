@@ -2,7 +2,7 @@ import Header from './Header/Header';
 import Table from "./Table/Table";
 import Footer from './Footer/Footer';
 import customers from "../Customers";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import "../index.css"
 
 const Main = () => {
@@ -19,28 +19,74 @@ const Main = () => {
   const [customersData, setCustomersData] = useState(() => getCustomersFromLocalStorage());
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortedCustomers, setSortedCustomers] = useState(customersData);
-  const [searchedCustomers, setSearchedCustomers] = useState(customersData);
-  const [customersToRender, setCustomersToRender] = useState(customersData);
+  const [searchValue, setSearchValue] = useState("");
   const [sort, setSort] = useState({ name: "sort-default", status: "sort-default" });
 
-  const customersReadyToRender = customersToRender.slice((currentPage - 1) * rowsPerPage, rowsPerPage * currentPage);
+  const searchCustomers = customersToSearchIn => {
+    let valueToSearch = searchValue.toLowerCase();
+    let searchedCustomers = customersToSearchIn.filter(customer => {
+      return (
+        customer.firstName.toLowerCase().includes(valueToSearch)
+        || customer.lastName.toLowerCase().includes(valueToSearch)
+        || customer.description.toLowerCase().includes(valueToSearch)
+        || customer.id.toString().includes(valueToSearch)
+      );
+    })
 
-  useEffect(() => {
-    if (customersReadyToRender.length === 0 && currentPage !== 1) {
-      setCurrentPage(previous => previous - 1);
+    return searchedCustomers;
+  }
+
+  const sortCustomersByName = (customers, sortOrder) => {
+    let customersToSort = customers.slice();
+
+    if (sortOrder.name === "sort-asc") {
+      return customersToSort.sort((customer1, customer2) => (customer1.firstName > customer2.firstName) ? 1 : -1);
     }
-  }, [customersReadyToRender])
 
-  useEffect(() => {
-    setCustomersToRender(searchedCustomers);
-  }, [searchedCustomers])
+    if (sortOrder.name === "sort-desc") {
+      return customersToSort.sort((customer1, customer2) => (customer1.firstName > customer2.firstName) ? -1 : 1);
+    }
+
+    return customersToSort;
+  }
+
+  const sortCustomersByStatus = (customers, sortOrder) => {
+    if (sortOrder.status === "sort-active") {
+      return (customers.filter((customer) => customer.status === "active"))
+        .concat(customers.filter((customer) => customer.status === "inactive"))
+    }
+
+    if (sortOrder.status === "sort-inactive") {
+      return (customers.filter((customer) => customer.status === "inactive"))
+        .concat(customers.filter((customer) => customer.status === "active"))
+    }
+    return customers;
+  }
+
+  const sortCombined = (customers, sortOrders) => {
+    if (sortOrders.name === "sort-default" && sortOrders.status === "sort-default") return customers;
+
+    let sortedByName = sortCustomersByName(customers, sortOrders);
+
+    return sortCustomersByStatus(sortedByName, sortOrders);
+  }
+
+  const sortedCustomers = sortCombined(customersData, sort);
+  const searchedCustomers = searchCustomers(sortedCustomers);
+  const activeCustomersCount = customersData.filter(customer => customer.status === "active").length;
+  const allCustomersCount = searchedCustomers.length;
+  const customersReadyToRender = searchedCustomers.slice((currentPage - 1) * rowsPerPage, rowsPerPage * currentPage);
+
+
+  if (customersReadyToRender.length === 0 && currentPage !== 1) {
+    setCurrentPage(previous => previous - 1);
+  }
 
   return (
     <div className="container">
       <Header
-        sortedCustomers={sortedCustomers}
-        setSearchedCustomers={setSearchedCustomers}
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
         setCurrentPage={setCurrentPage}
         sort={sort}
         setSort={setSort}
@@ -48,7 +94,6 @@ const Main = () => {
       <Table
         customersData={customersData}
         customersReadyToRender={customersReadyToRender}
-        setSortedCustomers={setSortedCustomers}
         setCustomersData={setCustomersData}
         sort={sort}
         setSort={setSort}
@@ -59,8 +104,9 @@ const Main = () => {
           rowsPerPage={rowsPerPage}
           setRowsPerPage={setRowsPerPage}
           setCurrentPage={setCurrentPage}
-          customersToRender={customersToRender}
+          allCustomersCount={allCustomersCount}
           customersReadyToRender={customersReadyToRender}
+          activeCustomersCount={activeCustomersCount}
         />
       }
     </div>
