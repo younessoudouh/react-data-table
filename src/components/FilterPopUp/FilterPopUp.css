@@ -1,0 +1,35 @@
+.sort {
+    position: absolute;
+    background-color: #fff;
+    z-index: 500;
+    padding: 10px;
+    width: 150px;
+    box-shadow: 2px 2px 10px 4px rgba(46, 46, 51, 0.2);
+    border-radius: 5px;
+    pointer-events: visible;
+}
+
+.sort-title {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.sort-by-name {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ebf2ff;
+}
+
+.sort-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sort-by-status {
+    padding-top: 10px;
+}
+
+.sort-input,
+.sort-label {
+    cursor: pointer;
+}

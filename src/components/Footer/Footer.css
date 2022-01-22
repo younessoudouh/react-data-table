@@ -23,10 +23,3 @@ footer ul {
 .fa-chevron-right {
     margin-left: 15px;
 }
-
-select {
-    border: 0;
-    color: #606F89;
-    font-size: var(--font-primary);
-    outline: none;
-}

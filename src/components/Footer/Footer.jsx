@@ -1,52 +1,49 @@
-import React,{useEffect, useState} from "react";
+import React from "react";
 import "./Footer.css";
+import Select from "../Select/Select";
 
-const Footer = ({props}) => {
+const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, setCurrentPage, allCustomersCount, customersReadyToRender, activeCustomersCount }) => {
+    const handleRowsChange = (e) => {
+        const rows = parseInt(e.target.value);
+        setCurrentPage(1);
+        setRowsPerPage(rows);
+    };
 
-let  [currentPage,rowsPerPage,setRowsPerPage,SetCurrentPage,customersToRender,customersReadyToRender] = props;
+    const handlePreviousPage = () => {
+        setCurrentPage(previous => previous > 1 ? previous - 1 : previous);
+    };
 
-const countActiveCustomers = (customersList) => {
-    return customersList.filter(customer=>customer.status==="active").length;
-}  
-
-const [activeCustomers,setActiveCustomers] = useState(countActiveCustomers(customersToRender));
-
-const handleChange = (e) => {
-    SetCurrentPage(1);
-    setRowsPerPage(parseInt(e.target.value));
-};
-
-const handlePreviousPage = () => {
-    SetCurrentPage(previous => previous > 1 ? previous-1 : previous);
-};
-
-const handleNextPage = () => {
-    SetCurrentPage(previous => customersToRender.length > rowsPerPage * currentPage ? previous + 1 : previous);
-};
-
-useEffect(() => {
-    setActiveCustomers(countActiveCustomers(customersToRender));
-},[customersToRender])
+    const handleNextPage = () => {
+        setCurrentPage(previous => allCustomersCount > rowsPerPage * currentPage ? previous + 1 : previous);
+    };
 
     return (
         <footer>
             <div className="active-customers">
-                active customers: <strong>{activeCustomers}</strong> / <small>{customersToRender.length}</small>
+                active customers:
+                {` `}
+                <strong>{activeCustomersCount}</strong>
+                {` `} / {` `}
+                <small>{allCustomersCount}</small>
             </div>
             <div className="right-side">
                 <ul>
                     <li className="rows-page">
                         Rows per page:
-                        <select onChange={handleChange}>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="25">25</option>
-                        </select>
+                        <Select
+                            options={[5, 10, 15, 20, 25]}
+                            rowsPerPage={rowsPerPage}
+                            chanchHandler={handleRowsChange}
+                        />
                     </li>
                     <li id="displayed-customer">
-                        {currentPage === 1 ? 1 : rowsPerPage * currentPage - rowsPerPage + 1} - {rowsPerPage * currentPage - (rowsPerPage - customersReadyToRender.length)} of  {customersToRender.length}
+                        {
+                            `${currentPage === 1 ? 1 : rowsPerPage * currentPage - rowsPerPage + 1} 
+                            -
+                            ${rowsPerPage * currentPage - (rowsPerPage - customersReadyToRender.length)}
+                            of 
+                            ${allCustomersCount}`
+                        }
                     </li>
                     <li>
                         <i className="fas fa-chevron-left" onClick={handlePreviousPage}></i>

@@ -4,17 +4,24 @@ import Button from "../Button/Button";
 import Filter from "../Filter/Filter";
 import "./Header.css"
 
-const Header = ({props}) => {
-    return(
+const Header = ({ searchValue, setSearchValue, setCurrentPage, sort, setSort }) => {
+    return (
         <header>
             <div className="filter-wrap">
-                <Filter />
-                <Search props={props} />
+                <Filter
+                    sort={sort}
+                    setSort={setSort}
+                />
+                <Search
+                    searchValue={searchValue}
+                    setSearchValue={setSearchValue}
+                    setCurrentPage={setCurrentPage}
+                />
             </div>
-                <Button className="add active">
-                    <i className="fas fa-plus-circle"></i>
-                    Add Customer
-                </Button>
+            <Button className="add active">
+                <i className="fas fa-plus-circle"></i>
+                Add Customer
+            </Button>
         </header>
     )
 }
