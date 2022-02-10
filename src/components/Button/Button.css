@@ -6,7 +6,7 @@
     border-radius: 11px;
     color: var(--secondary-color);
 }
-  
+
 .active {
     padding: 4px 5px;
     text-transform: uppercase;
@@ -30,20 +30,18 @@
 .add:hover {
     box-shadow: 0px 5px 5px #0A65FF;
     background-color: #112d5e;
-
 }
 
 .add:active {
     box-shadow: 0px 0px 1px #0A65FF;
     transform: scale(0.8);
-
 }
 
 .add i {
     margin-right: 10px;
 }
 
-.trash{
+.trash {
     border: none;
     background: transparent;
 }

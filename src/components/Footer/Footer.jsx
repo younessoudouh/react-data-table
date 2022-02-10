@@ -31,12 +31,12 @@ const Footer = ({ currentPage, rowsPerPage, setRowsPerPage, setCurrentPage, allC
                     <li className="rows-page">
                         Rows per page:
                         <Select
+                            value={rowsPerPage}
+                            changeHandler={handleRowsChange}
                             options={[5, 10, 15, 20, 25]}
-                            rowsPerPage={rowsPerPage}
-                            chanchHandler={handleRowsChange}
                         />
                     </li>
-                    <li id="displayed-customer">
+                    <li>
                         {
                             `${currentPage === 1 ? 1 : rowsPerPage * currentPage - rowsPerPage + 1} 
                             -
