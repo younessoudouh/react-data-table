@@ -162,7 +162,6 @@ const Form = ({
 
   const validateCurrency = (event) => {
     const { name: inputName, value: inputValue } = event.target;
-    console.log(inputValue)
     if (hasValue(inputValue, inputName)) {
       setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
     }
