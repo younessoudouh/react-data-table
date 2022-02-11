@@ -1,8 +1,8 @@
+import React, { useState } from "react";
 import Header from "./Header/Header";
 import Table from "./Table/Table";
 import Footer from "./Footer/Footer";
 import customers from "../Customers";
-import React, { useEffect, useState } from "react";
 import "../index.css";
 import Modal from "./Modal/Modal";
 import Form from "./Form/Form";
@@ -32,7 +32,6 @@ const Main = () => {
     name: "sort-default",
     status: "sort-default",
   });
-  const [isSubmited, setIsSubmited] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
   const resetNotificationMessage = () => {
@@ -51,10 +50,6 @@ const Main = () => {
   };
 
   resetNotificationMessage();
-
-  useEffect(() => {
-    localStorage.setItem("customers", JSON.stringify(customersData));
-  }, [isSubmited]);
 
   const searchCustomers = (customersToSearchIn) => {
     let valueToSearch = searchValue.toLowerCase();
@@ -139,7 +134,6 @@ const Main = () => {
             setCustomersData={setCustomersData}
             customersData={customersData}
             setAddCustomerOpen={setAddCustomerOpen}
-            setIsSubmited={setIsSubmited}
             setNotificationMessage={setNotificationMessage}
           />
         </Modal>

@@ -9,7 +9,6 @@ const Form = ({
   setCustomersData,
   setAddCustomerOpen,
   customersData,
-  setIsSubmited,
   setNotificationMessage,
 }) => {
   const [customerInfo, setCustomerInfo] = useState({
@@ -32,26 +31,35 @@ const Form = ({
 
   const submitHandler = (event) => {
     event.preventDefault();
-    let isFormValid = Object.values(errors).every(
+
+    let inputsErrors = {};
+
+    Object.entries(customerInfo).forEach(([inputName, inputValue]) => {
+      if (inputValue.length === 0) {
+        inputsErrors = {
+          ...inputsErrors,
+          [inputName]: inputName + " can`t be blank",
+        };
+      }
+    });
+
+    let isFormValid = Object.values(inputsErrors).every(
       (error) => error.length === 0
     );
 
-    Object.entries(customerInfo).forEach(
-      ([inputName, inputValue]) =>
-        inputValue.length === 0 &&
-        setErrors((previous) => ({
-          ...previous,
-          [inputName]: inputName + " can`t be blank",
-        }))
-    );
+    setErrors((previous) => ({ ...previous, ...inputsErrors }));
 
     if (isFormValid) {
+      localStorage.setItem(
+        "customers",
+        JSON.stringify([customerInfo, ...customersData])
+      );
+
       setCustomersData((previous) => [
         { ...customerInfo, highlighted: true },
         ...previous,
       ]);
       setAddCustomerOpen(false);
-      setIsSubmited(true);
       setNotificationMessage(
         `You Added ${customerInfo.firstName} Successfully`
       );
@@ -154,7 +162,7 @@ const Form = ({
 
   const validateCurrency = (event) => {
     const { name: inputName, value: inputValue } = event.target;
-
+    console.log(inputValue)
     if (hasValue(inputValue, inputName)) {
       setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
     }
@@ -182,7 +190,7 @@ const Form = ({
   };
 
   const isNumberExist = (inputValue, inputName, customers) => {
-    let isExist = customers.some((customer) => customer.id == inputValue);
+    let isExist = customers.some((customer) => customer.id === Number(inputValue));
     if (isExist) {
       setErrors((previous) => ({
         ...previous,
@@ -286,6 +294,13 @@ const Form = ({
       <h2 className="form-header">Add Customer</h2>
       <section className="first-section">
         <FormInput
+          className={
+            !customerInfo.firstName && !errors.firstName
+              ? ""
+              : errors.firstName
+              ? "error"
+              : "success"
+          }
           type="text"
           value={customerInfo.firstName}
           name="firstName"
@@ -297,31 +312,54 @@ const Form = ({
           refer={inputRef}
         />
         <FormInput
+          className={
+            !customerInfo.lastName && !errors.lastName
+              ? ""
+              : errors.lastName
+              ? "error"
+              : "success"
+          }
           type="text"
           name="lastName"
           value={customerInfo.lastName}
           placeholder="Last Name"
           changeHandler={(event) => validateLastName(event)}
+          blurHandler={(event) => validateLastName(event)}
           isInputValid={customerInfo.lastName && !errors.lastName}
           errorMessage={errors.lastName}
         />
         <FormInput
+          className={
+            !customerInfo.id && !errors.id
+              ? ""
+              : errors.id
+              ? "error"
+              : "success"
+          }
           type="text"
           name="id"
           value={customerInfo.number}
           maxLength="10"
           placeholder="Number"
           changeHandler={(event) => validateNumber(event, customersData)}
+          blurHandler={(event) => validateNumber(event, customersData)}
           isInputValid={customerInfo.id && !errors.id}
           errorMessage={errors.id}
         />
         <FormSelect
+          className={
+            !customerInfo.status && !errors.status
+              ? ""
+              : errors.status
+              ? "error"
+              : "success"
+          }
           type="text"
           name="status"
           value={customerInfo.status}
           placeholder="status"
-          className="add-customer-input"
           changeHandler={(event) => validateStatus(event)}
+          blurHandler={(event) => validateStatus(event)}
           isInputValid={customerInfo.status && !errors.status}
           errorMessage={errors.status}
           options={["Select status", "active", "inactive"]}
@@ -329,39 +367,70 @@ const Form = ({
       </section>
       <section className="second-section">
         <FormInput
+          className={
+            !customerInfo.rate && !errors.rate
+              ? ""
+              : errors.rate
+              ? "error"
+              : "success"
+          }
           type="text"
           name="rate"
           value={customerInfo.rate}
           placeholder="Rate"
           changeHandler={(event) => validateRate(event)}
+          blurHandler={(event) => validateRate(event)}
           isInputValid={customerInfo.rate && !errors.rate}
           errorMessage={errors.rate}
         />
         <FormInput
+          className={
+            !customerInfo.deposit && !errors.deposit
+              ? ""
+              : errors.deposit
+              ? "error"
+              : "success"
+          }
           type="text"
           name="deposit"
           value={customerInfo.deposit}
           placeholder="Deposit"
           changeHandler={(event) => validateDeposit(event)}
+          blurHandler={(event) => validateDeposit(event)}
           isInputValid={customerInfo.deposit && !errors.deposit}
           errorMessage={errors.deposit}
         />
         <FormInput
+          className={
+            !customerInfo.balance && !errors.balance
+              ? ""
+              : errors.balance
+              ? "error"
+              : "success"
+          }
           type="text"
           name="balance"
           value={customerInfo.balance}
           placeholder="Balance"
           changeHandler={(event) => validateBalance(event)}
+          blurHandler={(event) => validateBalance(event)}
           isInputValid={customerInfo.balance && !errors.balance}
           errorMessage={errors.balance}
         />
         <FormSelect
+          className={
+            !customerInfo.currency && !errors.currency
+              ? ""
+              : errors.currency
+              ? "error"
+              : "success"
+          }
           type="text"
           name="currency"
           value={customerInfo.currency}
           placeholder="Currency"
-          className="add-customer-input"
           changeHandler={(event) => validateCurrency(event)}
+          blurHandler={(event) => validateCurrency(event)}
           isInputValid={customerInfo.currency && !errors.currency}
           errorMessage={errors.currency}
           options={["Select currency", "EUR", "INR", "USD"]}
@@ -370,7 +439,13 @@ const Form = ({
       <section className="third-section">
         <div>
           <textarea
-            className="add-customer-input"
+            className={`add-customer-input ${
+              !customerInfo.description && !errors.description
+                ? ""
+                : errors.description
+                ? "error"
+                : "success"
+            }`}
             name="description"
             rows="2"
             cols="20"

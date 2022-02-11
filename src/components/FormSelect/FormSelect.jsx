@@ -9,6 +9,7 @@ const FormSelect = ({
   options,
   isInputValid,
   errorMessage,
+  blurHandler
 }) => {
   return (
     <div>
@@ -16,11 +17,12 @@ const FormSelect = ({
         name={name}
         value={value}
         onChange={changeHandler}
-        className={className}
+        onBlur={blurHandler}
+        className={`add-customer-input ${className}`}
       >
         {options.map((option, index) =>
           index === 0 ? (
-            <option key={index} value={option} disbled="true" hidden>
+            <option key={index} value="" disbled="true" hidden>
               {option}
             </option>
           ) : (
