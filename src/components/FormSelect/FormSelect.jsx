@@ -18,7 +18,8 @@ const FormSelect = ({
         value={value}
         onChange={changeHandler}
         onBlur={blurHandler}
-        className={`add-customer-input ${className}`}
+        className={`add-customer-input
+        ${!value && !errorMessage ? "" : errorMessage ? "error" : "success"}`}
       >
         {options.map((option, index) =>
           index === 0 ? (
@@ -32,8 +33,7 @@ const FormSelect = ({
           )
         )}
       </select>
-      {errorMessage ? <InputError errorMessage={errorMessage} /> : null}
-      {isInputValid ? <i className="fas fa-check-circle"></i> : null}
+      {isInputValid ? <i className="fas fa-check-circle"></i> : <InputError errorMessage={errorMessage} />}
     </div>
   );
 };

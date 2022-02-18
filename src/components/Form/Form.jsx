@@ -29,25 +29,58 @@ const Form = ({
     inputRef.current.focus();
   }, []);
 
+  useEffect(() => {
+    validateLastName();
+  }, [customerInfo.lastName]);
+
+  useEffect(() => {
+    validateFirstName(customersData);
+  }, [customerInfo.firstName]);
+
+  useEffect(() => {
+    validateNumber(customersData);
+  }, [customerInfo.id]);
+
+  useEffect(() => {
+    validateStatus();
+  }, [customerInfo.status]);
+
+  useEffect(() => {
+    validateCurrency();
+  }, [customerInfo.currency]);
+
+  useEffect(() => {
+    validateRate();
+  }, [customerInfo.rate]);
+
+  useEffect(() => {
+    validateBalance();
+  }, [customerInfo.balance]);
+
+  useEffect(() => {
+    validateDeposit();
+  }, [customerInfo.deposit]);
+
+  useEffect(() => {
+    validateDescription();
+  }, [customerInfo.description]);
+
   const submitHandler = (event) => {
     event.preventDefault();
 
-    let inputsErrors = {};
+    validateFirstName(customersData);
+    validateNumber(customersData);
+    validateLastName()
+    validateRate()
+    validateDeposit()
+    validateBalance()
+    validateStatus()
+    validateCurrency()
+    validateDescription()
 
-    Object.entries(customerInfo).forEach(([inputName, inputValue]) => {
-      if (inputValue.length === 0) {
-        inputsErrors = {
-          ...inputsErrors,
-          [inputName]: inputName + " can`t be blank",
-        };
-      }
-    });
-
-    let isFormValid = Object.values(inputsErrors).every(
+    let isFormValid = Object.values(errors).every(
       (error) => error.length === 0
     );
-
-    setErrors((previous) => ({ ...previous, ...inputsErrors }));
 
     if (isFormValid) {
       localStorage.setItem(
@@ -66,130 +99,57 @@ const Form = ({
     }
   };
 
-  const validateFirstName = (event, customers) => {
-    const { name: inputName, value: inputValue } = event.target;
-
-    if (hasValue(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({
-        ...previous,
-        [inputName]: wordCapitalize(inputValue),
-      }));
-    } else if (checkOnlyLetters(inputValue, inputName, /^[a-zA-Z]*$/)) {
-      setCustomerInfo((previous) => ({
-        ...previous,
-        [inputName]: wordCapitalize(inputValue),
-      }));
-    } else if (isFirstNameExist(inputValue, inputName, customers)) {
-      setCustomerInfo((previous) => ({
-        ...previous,
-        [inputName]: wordCapitalize(inputValue),
-      }));
-    } else {
-      setCustomerInfo((previous) => ({
-        ...previous,
-        [inputName]: wordCapitalize(inputValue),
-      }));
-    }
+  const validateFirstName = (customers) => {
+    if (hasValue(customerInfo.firstName, "firstName")) return;
+    if (checkOnlyLetters(customerInfo.firstName, "firstName", /^[a-zA-Z]*$/))
+      return;
+    isFirstNameExist(customerInfo.firstName, "firstName", customers);
   };
 
-  const validateLastName = (event) => {
-    const { name: inputName, value: inputValue } = event.target;
-
-    if (hasValue(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({
-        ...previous,
-        [inputName]: wordCapitalize(inputValue),
-      }));
-    } else if (checkOnlyLetters(inputValue, inputName, /^[a-zA-Z]*$/)) {
-      setCustomerInfo((previous) => ({
-        ...previous,
-        [inputName]: wordCapitalize(inputValue),
-      }));
-    }
-    setCustomerInfo((previous) => ({
-      ...previous,
-      [inputName]: wordCapitalize(inputValue),
-    }));
+  const validateLastName = () => {
+    if (hasValue(customerInfo.lastName, "lastName")) return;
+    if (checkOnlyLetters(customerInfo.lastName, "lastName", /^[a-zA-Z]*$/));
   };
 
-  const validateNumber = (event, customers) => {
-    const { name: inputName, value: inputValue } = event.target;
-
-    if (hasValue(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    } else if (isNumber(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    } else if (validLength(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    } else if (isNumberExist(inputValue, inputName, customers)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    }
-    setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
+  const validateNumber = (customers) => {
+    if (hasValue(customerInfo.id, "id")) return;
+    if (isNumber(customerInfo.id, "id")) return;
+    if (validLength(customerInfo.id, "id")) return;
+    isNumberExist(customerInfo.id, "id", customers);
   };
 
-  const validateDeposit = (event) => {
-    const { name: inputName, value: inputValue } = event.target;
-
-    if (hasValue(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    } else if (isNumber(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    }
-    setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
+  const validateDeposit = () => {
+    if (hasValue(customerInfo.deposit, "deposit")) return;
+    isNumber(customerInfo.deposit, "deposit");
   };
 
-  const validateRate = (event) => {
-    const { name: inputName, value: inputValue } = event.target;
-
-    if (hasValue(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    } else if (isNumber(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    }
-    setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
+  const validateRate = () => {
+    if (hasValue(customerInfo.rate, "rate")) return;
+    isNumber(customerInfo.rate, "rate");
   };
 
-  const validateBalance = (event) => {
-    const { name: inputName, value: inputValue } = event.target;
-
-    if (hasValue(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    } else if (isNumber(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    }
-    setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
+  const validateBalance = () => {
+    if (hasValue(customerInfo.balance, "balance")) return;
+    isNumber(customerInfo.balance, "balance");
   };
 
-  const validateCurrency = (event) => {
-    const { name: inputName, value: inputValue } = event.target;
-    if (hasValue(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    }
-    setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
+  const validateCurrency = () => {
+    hasValue(customerInfo.currency, "currency");
   };
 
-  const validateStatus = (event) => {
-    const { name: inputName, value: inputValue } = event.target;
-
-    if (hasValue(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    }
-    setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
+  const validateStatus = () => {
+    hasValue(customerInfo.status, "status");
   };
 
-  const validateDescription = (event) => {
-    const { name: inputName, value: inputValue } = event.target;
-
-    if (hasValue(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    } else if (validLength(inputValue, inputName)) {
-      setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
-    }
-    setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
+  const validateDescription = () => {
+    if (hasValue(customerInfo.description, "description")) return;
+    validLength(customerInfo.description, "description");
   };
 
   const isNumberExist = (inputValue, inputName, customers) => {
-    let isExist = customers.some((customer) => customer.id === Number(inputValue));
+    let isExist = customers.some(
+      (customer) => customer.id === Number(inputValue)
+    );
     if (isExist) {
       setErrors((previous) => ({
         ...previous,
@@ -288,77 +248,50 @@ const Form = ({
     setAddCustomerOpen(false);
   };
 
+  const handleFormInputChange = (event) => {
+    const { name: inputName, value: inputValue } = event.target;
+    setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
+  };
+
   return (
     <form className="form" onSubmit={submitHandler}>
       <h2 className="form-header">Add Customer</h2>
       <section className="first-section">
         <FormInput
-          className={
-            !customerInfo.firstName && !errors.firstName
-              ? ""
-              : errors.firstName
-              ? "error"
-              : "success"
-          }
           type="text"
           value={customerInfo.firstName}
           name="firstName"
           placeholder="First Name"
-          changeHandler={(event) => validateFirstName(event, customersData)}
-          blurHandler={(event) => validateFirstName(event, customersData)}
+          changeHandler={(event) => handleFormInputChange(event)}
           isInputValid={customerInfo.firstName && !errors.firstName}
           errorMessage={errors.firstName}
           refer={inputRef}
         />
         <FormInput
-          className={
-            !customerInfo.lastName && !errors.lastName
-              ? ""
-              : errors.lastName
-              ? "error"
-              : "success"
-          }
           type="text"
           name="lastName"
           value={customerInfo.lastName}
           placeholder="Last Name"
-          changeHandler={(event) => validateLastName(event)}
-          blurHandler={(event) => validateLastName(event)}
+          changeHandler={(event) => handleFormInputChange(event)}
           isInputValid={customerInfo.lastName && !errors.lastName}
           errorMessage={errors.lastName}
         />
         <FormInput
-          className={
-            !customerInfo.id && !errors.id
-              ? ""
-              : errors.id
-              ? "error"
-              : "success"
-          }
           type="text"
           name="id"
-          value={customerInfo.number}
+          value={customerInfo.id}
           maxLength="10"
           placeholder="Number"
-          changeHandler={(event) => validateNumber(event, customersData)}
-          blurHandler={(event) => validateNumber(event, customersData)}
+          changeHandler={(event) => handleFormInputChange(event)}
           isInputValid={customerInfo.id && !errors.id}
           errorMessage={errors.id}
         />
         <FormSelect
-          className={
-            !customerInfo.status && !errors.status
-              ? ""
-              : errors.status
-              ? "error"
-              : "success"
-          }
           type="text"
           name="status"
           value={customerInfo.status}
           placeholder="status"
-          changeHandler={(event) => validateStatus(event)}
-          blurHandler={(event) => validateStatus(event)}
+          changeHandler={(event) => handleFormInputChange(event)}
           isInputValid={customerInfo.status && !errors.status}
           errorMessage={errors.status}
           options={["Select status", "active", "inactive"]}
@@ -366,70 +299,38 @@ const Form = ({
       </section>
       <section className="second-section">
         <FormInput
-          className={
-            !customerInfo.rate && !errors.rate
-              ? ""
-              : errors.rate
-              ? "error"
-              : "success"
-          }
           type="text"
           name="rate"
           value={customerInfo.rate}
           placeholder="Rate"
-          changeHandler={(event) => validateRate(event)}
-          blurHandler={(event) => validateRate(event)}
+          changeHandler={(event) => handleFormInputChange(event)}
           isInputValid={customerInfo.rate && !errors.rate}
           errorMessage={errors.rate}
         />
         <FormInput
-          className={
-            !customerInfo.deposit && !errors.deposit
-              ? ""
-              : errors.deposit
-              ? "error"
-              : "success"
-          }
           type="text"
           name="deposit"
           value={customerInfo.deposit}
           placeholder="Deposit"
-          changeHandler={(event) => validateDeposit(event)}
-          blurHandler={(event) => validateDeposit(event)}
+          changeHandler={(event) => handleFormInputChange(event)}
           isInputValid={customerInfo.deposit && !errors.deposit}
           errorMessage={errors.deposit}
         />
         <FormInput
-          className={
-            !customerInfo.balance && !errors.balance
-              ? ""
-              : errors.balance
-              ? "error"
-              : "success"
-          }
           type="text"
           name="balance"
           value={customerInfo.balance}
           placeholder="Balance"
-          changeHandler={(event) => validateBalance(event)}
-          blurHandler={(event) => validateBalance(event)}
+          changeHandler={(event) => handleFormInputChange(event)}
           isInputValid={customerInfo.balance && !errors.balance}
           errorMessage={errors.balance}
         />
         <FormSelect
-          className={
-            !customerInfo.currency && !errors.currency
-              ? ""
-              : errors.currency
-              ? "error"
-              : "success"
-          }
           type="text"
           name="currency"
           value={customerInfo.currency}
           placeholder="Currency"
-          changeHandler={(event) => validateCurrency(event)}
-          blurHandler={(event) => validateCurrency(event)}
+          changeHandler={(event) => handleFormInputChange(event)}
           isInputValid={customerInfo.currency && !errors.currency}
           errorMessage={errors.currency}
           options={["Select currency", "EUR", "INR", "USD"]}
@@ -438,25 +339,25 @@ const Form = ({
       <section className="third-section">
         <div>
           <textarea
-            className={`add-customer-input ${
-              !customerInfo.description && !errors.description
-                ? ""
-                : errors.description
-                ? "error"
-                : "success"
-            }`}
+            className={`add-customer-input
+              ${
+                !customerInfo.description && !errors.description
+                  ? ""
+                  : errors.description
+                  ? "error"
+                  : "success"
+              }`}
             name="description"
             rows="2"
             cols="20"
             placeholder="Description..."
-            onChange={(event) => validateDescription(event)}
+            onChange={(event) => handleFormInputChange(event)}
           />
-          {errors.description ? (
-            <InputError errorMessage={errors.description} />
-          ) : null}
           {customerInfo.description && !errors.description ? (
             <i className="fas fa-check-circle"></i>
-          ) : null}
+          ) : (
+            <InputError errorMessage={errors.description} />
+          )}
         </div>
       </section>
       <section className="btn-group">

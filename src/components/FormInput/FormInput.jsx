@@ -23,12 +23,16 @@ const FormInput = ({
         name={name}
         placeholder={placeholder}
         maxLength={maxLength}
-        className={`add-customer-input ${className}`}
+        className={`add-customer-input
+          ${!value && !errorMessage ? "" : errorMessage ? "error" : "success"}`}
         value={value}
         ref={refer}
       />
-      {!isInputValid ? <InputError errorMessage={errorMessage} /> : null}
-      {isInputValid ? <i className="fas fa-check-circle"></i> : null}
+      {isInputValid ? (
+        <i className="fas fa-check-circle"></i>
+      ) : (
+        <InputError errorMessage={errorMessage} />
+      )}
     </div>
   );
 };
