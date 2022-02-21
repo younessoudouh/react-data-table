@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./Form.css";
 import FormInput from "../FormInput/FormInput";
 import Button from "../Button/Button";
@@ -10,6 +10,10 @@ const Form = ({
   setAddCustomerOpen,
   customersData,
   setNotificationMessage,
+  addCustomerOpen,
+  editOpen,
+  setEditOpen,
+  customerToEdit,
 }) => {
   const [customerInfo, setCustomerInfo] = useState({
     firstName: "",
@@ -22,65 +26,114 @@ const Form = ({
     currency: "",
     description: "",
   });
-  const [errors, setErrors] = useState(customerInfo);
+  const [errors, setErrors] = useState({});
   const inputRef = useRef();
+  const firstRender = useRef(true);
+  const customersToUseForEdit = useMemo(() => {
+    return customersData.filter(
+      (customer) => customer.id !== customerToEdit.id
+    );
+  }, []);
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
   useEffect(() => {
+    if (editOpen) {
+      setCustomerInfo(customerToEdit);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (firstRender.current) {
+      return;
+    } else if (firstRender.current) {
+      return;
+    }
     validateLastName();
   }, [customerInfo.lastName]);
 
   useEffect(() => {
+    if (editOpen) {
+      validateFirstName(customersToUseForEdit);
+      return;
+    } else if (firstRender.current) {
+      return;
+    }
     validateFirstName(customersData);
   }, [customerInfo.firstName]);
 
   useEffect(() => {
+    if (editOpen) {
+      validateNumber(customersToUseForEdit);
+      return;
+    } else if (firstRender.current) {
+      return;
+    }
     validateNumber(customersData);
   }, [customerInfo.id]);
 
   useEffect(() => {
+    if (firstRender.current) {
+      return;
+    }
     validateStatus();
   }, [customerInfo.status]);
 
   useEffect(() => {
+    if (firstRender.current) {
+      return;
+    }
     validateCurrency();
   }, [customerInfo.currency]);
 
   useEffect(() => {
+    if (firstRender.current) {
+      return;
+    }
     validateRate();
   }, [customerInfo.rate]);
 
   useEffect(() => {
+    if (firstRender.current) {
+      return;
+    }
     validateBalance();
   }, [customerInfo.balance]);
 
   useEffect(() => {
+    if (firstRender.current) {
+      return;
+    }
     validateDeposit();
   }, [customerInfo.deposit]);
 
   useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
     validateDescription();
   }, [customerInfo.description]);
 
   const submitHandler = (event) => {
     event.preventDefault();
-
     validateFirstName(customersData);
     validateNumber(customersData);
-    validateLastName()
-    validateRate()
-    validateDeposit()
-    validateBalance()
-    validateStatus()
-    validateCurrency()
-    validateDescription()
-
-    let isFormValid = Object.values(errors).every(
-      (error) => error.length === 0
-    );
+    validateLastName();
+    validateRate();
+    validateDeposit();
+    validateBalance();
+    validateStatus();
+    validateCurrency();
+    validateDescription();
+    let isFormValid;
+    setErrors((previous) => {
+      isFormValid = Object.values(errors).every((error) => error.length === 0);
+      return previous;
+    });
 
     if (isFormValid) {
       localStorage.setItem(
@@ -96,6 +149,31 @@ const Form = ({
       setNotificationMessage(
         `You Added ${customerInfo.firstName} Successfully`
       );
+    }
+  };
+
+  const updateCustomersData = () => {
+    let customerToEditIndex = customersData.findIndex(
+      (customer) => customer.id == customerToEdit.id
+    );
+    customersToUseForEdit.splice(customerToEditIndex, 0, {
+      ...customerInfo,
+      highlighted: true,
+    });
+    return customersToUseForEdit;
+  };
+
+  const editHandler = () => {
+    let isFormValid = Object.values(errors).every(
+      (error) => error.length === 0
+    );
+
+    if (isFormValid) {
+      setCustomersData(updateCustomersData());
+
+      localStorage.setItem("customers", JSON.stringify(customersToUseForEdit));
+      setEditOpen(false);
+      setNotificationMessage(`You Edit ${customerInfo.firstName} Successfully`);
     }
   };
 
@@ -205,7 +283,7 @@ const Form = ({
   };
 
   const hasValue = (inputValue, inputName) => {
-    if (!inputValue.trim()) {
+    if (!String(inputValue).trim()) {
       setErrors((previous) => ({
         ...previous,
         [inputName]: inputName + " can`t be blank",
@@ -246,6 +324,7 @@ const Form = ({
 
   const handleCuncel = () => {
     setAddCustomerOpen(false);
+    setEditOpen(false);
   };
 
   const handleFormInputChange = (event) => {
@@ -348,6 +427,7 @@ const Form = ({
                   : "success"
               }`}
             name="description"
+            value={customerInfo.description}
             rows="2"
             cols="20"
             placeholder="Description..."
@@ -361,9 +441,16 @@ const Form = ({
         </div>
       </section>
       <section className="btn-group">
-        <Button className="btn" type="submit">
-          Submit
-        </Button>
+        {addCustomerOpen && (
+          <Button className="btn" type="submit">
+            Submit
+          </Button>
+        )}
+        {editOpen && (
+          <Button className="btn" type="button" clickHandler={editHandler}>
+            Edit
+          </Button>
+        )}
         <Button className="btn" type="button" clickHandler={handleCuncel}>
           Cuncel
         </Button>

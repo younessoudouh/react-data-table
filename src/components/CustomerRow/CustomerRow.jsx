@@ -13,7 +13,8 @@ const CustomerRow = ({
   id,
   currency,
   highlighted,
-  clickHandler,
+  deleteClickHandler,
+  editClickHandler
 }) => {
   return (
     <tr className={highlighted ? "highlight" : ""}>
@@ -46,11 +47,13 @@ const CustomerRow = ({
       </td>
       <td>
         <div className="flex">
+          <Button clickHandler={editClickHandler} className="trash">
           <i className="fas fa-pen"></i>
-          <Button clickHandler={clickHandler} className="trash">
+          </Button>
+          <Button clickHandler={deleteClickHandler} className="trash">
             <i className="far fa-trash-alt"></i>
           </Button>
-          <i className="fas fa-ellipsis-v"></i>
+          <i className="fas fa-ellipsis-v" onClick={()=>console.log("fff")}></i>
         </div>
       </td>
     </tr>

@@ -8,11 +8,13 @@ const Table = ({
   setCustomersData,
   sort,
   setSort,
+  setEditOpen,
+  setCustomerToEdit,
 }) => {
   const setCustomersInLocalStorage = (customersList) =>
     localStorage.setItem("customers", JSON.stringify(customersList));
 
-  const deletCustomer = (customerId, customers) => {
+  const deleteCustomer = (customerId, customers) => {
     if (window.confirm("are you sure")) {
       setCustomersData(
         customers.filter((customer) => customer.id !== customerId)
@@ -43,6 +45,14 @@ const Table = ({
     }
   };
 
+  const getCustomerToEdit = (customerId, customers) => {
+    setEditOpen(true);
+    let customerToEdit = customers.find(
+      (customer) => customer.id == customerId
+    );
+    setCustomerToEdit(customerToEdit);
+  };
+
   return (
     <table>
       <thead>
@@ -69,7 +79,12 @@ const Table = ({
         {customersReadyToRender.map((customer) => (
           <CustomerRow
             key={customer.id}
-            clickHandler={() => deletCustomer(customer.id, customersData)}
+            deleteClickHandler={() =>
+              deleteCustomer(customer.id, customersData)
+            }
+            editClickHandler={() =>
+              getCustomerToEdit(customer.id, customersData)
+            }
             {...customer}
           />
         ))}

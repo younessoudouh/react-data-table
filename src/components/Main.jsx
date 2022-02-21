@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header/Header";
 import Table from "./Table/Table";
 import Footer from "./Footer/Footer";
@@ -27,12 +27,14 @@ const Main = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [addCustomerOpen, setAddCustomerOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [sort, setSort] = useState({
     name: "sort-default",
     status: "sort-default",
   });
   const [notificationMessage, setNotificationMessage] = useState("");
+  const [customerToEdit, setCustomerToEdit] = useState({});
 
   const resetNotificationMessage = () => {
     if (notificationMessage) {
@@ -49,7 +51,9 @@ const Main = () => {
     }
   };
 
-  resetNotificationMessage();
+  useEffect(() => {
+    resetNotificationMessage();
+  }, [notificationMessage]);
 
   const searchCustomers = (customersToSearchIn) => {
     let valueToSearch = searchValue.toLowerCase();
@@ -128,16 +132,20 @@ const Main = () => {
   return (
     <div className="container">
       {notificationMessage && <Notification content={notificationMessage} />}
-      {addCustomerOpen && (
+      {addCustomerOpen || editOpen ? (
         <Modal>
           <Form
             setCustomersData={setCustomersData}
             customersData={customersData}
             setAddCustomerOpen={setAddCustomerOpen}
             setNotificationMessage={setNotificationMessage}
+            addCustomerOpen={addCustomerOpen}
+            editOpen={editOpen}
+            setEditOpen={setEditOpen}
+            customerToEdit={customerToEdit}
           />
         </Modal>
-      )}
+      ) : null}
       <Header
         searchValue={searchValue}
         setSearchValue={setSearchValue}
@@ -152,6 +160,8 @@ const Main = () => {
         setCustomersData={setCustomersData}
         sort={sort}
         setSort={setSort}
+        setEditOpen={setEditOpen}
+        setCustomerToEdit={setCustomerToEdit}
       />
       {customersReadyToRender.length === 0 ? null : (
         <Footer
