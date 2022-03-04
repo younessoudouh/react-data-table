@@ -7,7 +7,7 @@ const customers = [{
         balance: "000.00",
         deposit: "560.00",
         status: "active",
-        currency: "INR"
+        currency: "INR",
     },
     {
         firstName: "Alexis",
@@ -18,7 +18,7 @@ const customers = [{
         balance: "700.00",
         deposit: "960.00",
         status: "inactive",
-        currency: "INR"
+        currency: "INR",
     },
     {
         firstName: "Wyatt",
@@ -29,7 +29,7 @@ const customers = [{
         balance: "700.00",
         deposit: "960.00",
         status: "inactive",
-        currency: "INR"
+        currency: "INR",
     },
     {
         firstName: "Leo",
@@ -40,7 +40,7 @@ const customers = [{
         balance: "400.00",
         deposit: "360.00",
         status: "active",
-        currency: "INR"
+        currency: "INR",
     },
     {
         firstName: "Anaelle",
@@ -51,7 +51,7 @@ const customers = [{
         balance: "-350.00",
         deposit: "160.00",
         status: "active",
-        currency: "INR"
+        currency: "INR",
     },
     {
         firstName: "Matilda",
@@ -62,7 +62,7 @@ const customers = [{
         balance: "550.00",
         deposit: "500.00",
         status: "inactive",
-        currency: "INR"
+        currency: "INR",
     },
     {
         firstName: "Pilar",
@@ -73,8 +73,9 @@ const customers = [{
         balance: "900.00",
         deposit: " 100.00",
         status: "active",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "James",
         lastName: "Herrera",
         id: 1123450003,
@@ -83,8 +84,9 @@ const customers = [{
         balance: "-550.00",
         deposit: "709.00",
         status: "inactive",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Storm",
         lastName: "Moller",
         id: 3345432245,
@@ -93,8 +95,9 @@ const customers = [{
         balance: "450.00",
         deposit: "200.00",
         status: "inactive",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Monica",
         lastName: "Cruz",
         id: 1000454323,
@@ -103,8 +106,9 @@ const customers = [{
         balance: "-550.00",
         deposit: "879.00",
         status: "active",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Ryder",
         lastName: "Li",
         id: 3555432345,
@@ -113,8 +117,9 @@ const customers = [{
         balance: "-300.00",
         deposit: " 200.00",
         status: "inactive",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Emir",
         lastName: "Hoff",
         id: 1100445323,
@@ -123,8 +128,9 @@ const customers = [{
         balance: "-550.00",
         deposit: "700.00",
         status: "active",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Emily",
         lastName: "King",
         id: 1123455443,
@@ -133,8 +139,9 @@ const customers = [{
         balance: "-200.00",
         deposit: "800.00",
         status: "inactive",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Maximilian",
         lastName: "Lucas",
         id: 7778432345,
@@ -143,8 +150,9 @@ const customers = [{
         balance: "500.00",
         deposit: " 400.00",
         status: "active",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Vildan",
         lastName: "Tuzun",
         id: 1123888873,
@@ -153,8 +161,9 @@ const customers = [{
         balance: "-250.00",
         deposit: "780.00",
         status: "inactive",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Klaus",
         lastName: "Roy",
         id: 1100004323,
@@ -163,8 +172,9 @@ const customers = [{
         balance: "450.00",
         deposit: "760.00",
         status: "inactive",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Florencia",
         lastName: "Souza",
         id: 1123000000,
@@ -173,8 +183,9 @@ const customers = [{
         balance: "750.00",
         deposit: "650.00",
         status: "active",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Lorraine",
         lastName: "Chambers",
         id: 1123066700,
@@ -183,8 +194,9 @@ const customers = [{
         balance: "-550.00",
         deposit: "950.00",
         status: "active",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Brandon",
         lastName: "Byrd",
         id: 1123067230,
@@ -193,8 +205,9 @@ const customers = [{
         balance: "250.00",
         deposit: "350.00",
         status: "inactive",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Alvin",
         lastName: "Ferguson",
         id: 8989067230,
@@ -203,8 +216,9 @@ const customers = [{
         balance: "-550.00",
         deposit: "550.00",
         status: "inactive",
-        currency: "INR"
-    }, {
+        currency: "INR",
+    },
+    {
         firstName: "Asuncion",
         lastName: "Moreno",
         id: 8987878730,
@@ -213,8 +227,8 @@ const customers = [{
         balance: "-650.00",
         deposit: "750.00",
         status: "active",
-        currency: "INR"
-    }
+        currency: "INR",
+    },
 ];
 
 export default customers;

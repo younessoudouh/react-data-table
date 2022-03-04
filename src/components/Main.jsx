@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Header from "./Header/Header";
 import Table from "./Table/Table";
 import Footer from "./Footer/Footer";
@@ -36,24 +36,25 @@ const Main = () => {
   const [notificationMessage, setNotificationMessage] = useState("");
   const [customerToEdit, setCustomerToEdit] = useState({});
 
-  const resetNotificationMessage = () => {
+  const resetNotificationMessage = useCallback( () => {
+    const removeHighlight =()=>{
+      return customersData.map((customer) =>
+            customer.highlighted ? { ...customer, highlighted: false } : customer
+          );
+    }
+    
     if (notificationMessage) {
       setTimeout(() => {
         setNotificationMessage("");
-        setCustomersData((previous) =>
-          previous.map((customer) =>
-            customer.highlighted
-              ? { ...customer, highlighted: false }
-              : customer
-          )
-        );
+        setCustomersData(removeHighlight());
+        localStorage.setItem("customers", JSON.stringify(removeHighlight()));
       }, 3000);
     }
-  };
+  },[notificationMessage])
 
   useEffect(() => {
     resetNotificationMessage();
-  }, [notificationMessage]);
+  }, [resetNotificationMessage]);
 
   const searchCustomers = (customersToSearchIn) => {
     let valueToSearch = searchValue.toLowerCase();

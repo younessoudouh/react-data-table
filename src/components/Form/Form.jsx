@@ -33,7 +33,7 @@ const Form = ({
     return customersData.filter(
       (customer) => customer.id !== customerToEdit.id
     );
-  }, []);
+  }, [editOpen]);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -47,8 +47,6 @@ const Form = ({
 
   useEffect(() => {
     if (firstRender.current) {
-      return;
-    } else if (firstRender.current) {
       return;
     }
     validateLastName();
@@ -114,33 +112,29 @@ const Form = ({
       firstRender.current = false;
       return;
     }
-
     validateDescription();
   }, [customerInfo.description]);
 
+  const handleValidation = () => {
+    let isFormValid = true;
+
+    if (!validateFirstName(customersData)) isFormValid = false;
+    if (!validateLastName()) isFormValid = false;
+    if (!validateNumber(customersData)) isFormValid = false;
+    if (!validateStatus()) isFormValid = false;
+    if (!validateRate()) isFormValid = false;
+    if (!validateDeposit()) isFormValid = false;
+    if (!validateBalance()) isFormValid = false;
+    if (!validateCurrency()) isFormValid = false;
+    if (!validateDescription()) isFormValid = false;
+
+    return isFormValid;
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
-    validateFirstName(customersData);
-    validateNumber(customersData);
-    validateLastName();
-    validateRate();
-    validateDeposit();
-    validateBalance();
-    validateStatus();
-    validateCurrency();
-    validateDescription();
-    let isFormValid;
-    setErrors((previous) => {
-      isFormValid = Object.values(errors).every((error) => error.length === 0);
-      return previous;
-    });
 
-    if (isFormValid) {
-      localStorage.setItem(
-        "customers",
-        JSON.stringify([customerInfo, ...customersData])
-      );
-
+    if (handleValidation()) {
       setCustomersData((previous) => [
         { ...customerInfo, highlighted: true },
         ...previous,
@@ -170,63 +164,72 @@ const Form = ({
 
     if (isFormValid) {
       setCustomersData(updateCustomersData());
-
-      localStorage.setItem("customers", JSON.stringify(customersToUseForEdit));
       setEditOpen(false);
       setNotificationMessage(`You Edit ${customerInfo.firstName} Successfully`);
     }
   };
 
   const validateFirstName = (customers) => {
-    if (hasValue(customerInfo.firstName, "firstName")) return;
+    if (hasValue(customerInfo.firstName, "firstName")) return false;
     if (checkOnlyLetters(customerInfo.firstName, "firstName", /^[a-zA-Z]*$/))
-      return;
-    isFirstNameExist(customerInfo.firstName, "firstName", customers);
+      return false;
+    if (isFirstNameExist(customerInfo.firstName, "firstName", customers))
+      return false;
+    return true;
   };
 
   const validateLastName = () => {
-    if (hasValue(customerInfo.lastName, "lastName")) return;
-    if (checkOnlyLetters(customerInfo.lastName, "lastName", /^[a-zA-Z]*$/));
+    if (hasValue(customerInfo.lastName, "lastName")) return false;
+    if (checkOnlyLetters(customerInfo.lastName, "lastName", /^[a-zA-Z]*$/))
+      return false;
+    return true;
   };
 
   const validateNumber = (customers) => {
-    if (hasValue(customerInfo.id, "id")) return;
-    if (isNumber(customerInfo.id, "id")) return;
-    if (validLength(customerInfo.id, "id")) return;
-    isNumberExist(customerInfo.id, "id", customers);
+    if (hasValue(customerInfo.id, "id")) return false;
+    if (isNumber(customerInfo.id, "id")) return false;
+    if (validLength(customerInfo.id, "id")) return false;
+    if (isNumberExist(customerInfo.id, "id", customers)) return false;
+    return true;
   };
 
   const validateDeposit = () => {
-    if (hasValue(customerInfo.deposit, "deposit")) return;
-    isNumber(customerInfo.deposit, "deposit");
+    if (hasValue(customerInfo.deposit, "deposit")) return false;
+    if (isNumber(customerInfo.deposit, "deposit")) return false;
+    return true;
   };
 
   const validateRate = () => {
-    if (hasValue(customerInfo.rate, "rate")) return;
-    isNumber(customerInfo.rate, "rate");
+    if (hasValue(customerInfo.rate, "rate")) return false;
+    if (isNumber(customerInfo.rate, "rate")) return false;
+    return true;
   };
 
   const validateBalance = () => {
-    if (hasValue(customerInfo.balance, "balance")) return;
-    isNumber(customerInfo.balance, "balance");
+    if (hasValue(customerInfo.balance, "balance")) return false;
+    if (isNumber(customerInfo.balance, "balance")) return false;
+    return true;
   };
 
   const validateCurrency = () => {
-    hasValue(customerInfo.currency, "currency");
+    if (hasValue(customerInfo.currency, "currency")) return false;
+    return true;
   };
 
   const validateStatus = () => {
-    hasValue(customerInfo.status, "status");
+    if (hasValue(customerInfo.status, "status")) return false;
+    return true;
   };
 
   const validateDescription = () => {
-    if (hasValue(customerInfo.description, "description")) return;
-    validLength(customerInfo.description, "description");
+    if (hasValue(customerInfo.description, "description")) return false;
+    if (validLength(customerInfo.description, "description")) return false;
+    return true;
   };
 
   const isNumberExist = (inputValue, inputName, customers) => {
     let isExist = customers.some(
-      (customer) => customer.id === Number(inputValue)
+      (customer) => Number(customer.id) === Number(inputValue)
     );
     if (isExist) {
       setErrors((previous) => ({
@@ -448,7 +451,7 @@ const Form = ({
         )}
         {editOpen && (
           <Button className="btn" type="button" clickHandler={editHandler}>
-            Edit
+            Update
           </Button>
         )}
         <Button className="btn" type="button" clickHandler={handleCuncel}>
