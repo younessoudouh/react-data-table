@@ -1,13 +1,10 @@
 import React from "react";
 import "./Select.css";
 
-const Select = ({ value, changeHandler, options, className, name }) => {
+const Select = ({options,...rest }) => {
   return (
     <select
-      name={name}
-      value={value}
-      onChange={changeHandler}
-      className={className}
+     {...rest}
     >
       {options.map((option, index) => (
         <option key={index} value={option}>

@@ -8,7 +8,7 @@ const Table = ({
   setCustomersData,
   sort,
   setSort,
-  setEditOpen,
+  setUpdateCustomerOpen,
   setCustomerToEdit,
 }) => {
   const setCustomersInLocalStorage = (customersList) =>
@@ -16,12 +16,11 @@ const Table = ({
 
   const deleteCustomer = (customerId, customers) => {
     if (window.confirm("are you sure")) {
-      setCustomersData(
-        customers.filter((customer) => customer.id !== customerId)
+      let updatedCustomers = customers.filter(
+        (customer) => customer.id !== customerId
       );
-      setCustomersInLocalStorage(
-        customers.filter((customer) => customer.id !== customerId)
-      );
+      setCustomersData(updatedCustomers);
+      setCustomersInLocalStorage(updatedCustomers);
     }
   };
 
@@ -46,7 +45,7 @@ const Table = ({
   };
 
   const getCustomerToEdit = (customerId, customers) => {
-    setEditOpen(true);
+    setUpdateCustomerOpen(true);
     let customerToEdit = customers.find(
       (customer) => customer.id == customerId
     );

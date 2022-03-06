@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{memo}from "react";
 import Search from "../Search/Search";
 import Button from "../Button/Button";
 import Filter from "../Filter/Filter";
@@ -26,7 +26,7 @@ const Header = ({
           setCurrentPage={setCurrentPage}
         />
       </div>
-      <Button className="add active" clickHandler={handleClickOnAddCustomer}>
+      <Button className="add active" onClick={handleClickOnAddCustomer}>
         <i className="fas fa-plus-circle"></i>
         Add Customer
       </Button>
@@ -34,4 +34,4 @@ const Header = ({
   );
 };
 
-export default Header;
+export default memo(Header);

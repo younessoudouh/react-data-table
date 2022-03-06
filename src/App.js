@@ -9,11 +9,11 @@ import Form from "./components/Form/Form";
 import Notification from "./components/Notification/Notification";
 
 const App = () => {
-  (() => {
+  useEffect(() => {
     if (JSON.parse(localStorage.getItem("customers")) === null) {
       localStorage.setItem("customers", JSON.stringify(customers));
     }
-  })();
+  }, []);
 
   const getCustomersFromLocalStorage = () => {
     return localStorage.getItem("customers")
@@ -27,7 +27,7 @@ const App = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [addCustomerOpen, setAddCustomerOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
+  const [updateCustomerOpen, setUpdateCustomerOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [sort, setSort] = useState({
     name: "sort-default",
@@ -36,13 +36,13 @@ const App = () => {
   const [notificationMessage, setNotificationMessage] = useState("");
   const [customerToEdit, setCustomerToEdit] = useState({});
 
-  const resetNotificationMessage = useCallback( () => {
-    const removeHighlight =()=>{
+  const resetNotificationMessage = useCallback(() => {
+    const removeHighlight = () => {
       return customersData.map((customer) =>
-            customer.highlighted ? { ...customer, highlighted: false } : customer
-          );
-    }
-    
+        customer.highlighted ? { ...customer, highlighted: false } : customer
+      );
+    };
+
     if (notificationMessage) {
       setTimeout(() => {
         setNotificationMessage("");
@@ -50,7 +50,7 @@ const App = () => {
         localStorage.setItem("customers", JSON.stringify(removeHighlight()));
       }, 3000);
     }
-  },[notificationMessage])
+  }, [notificationMessage]);
 
   useEffect(() => {
     resetNotificationMessage();
@@ -59,11 +59,12 @@ const App = () => {
   const searchCustomers = (customersToSearchIn) => {
     let valueToSearch = searchValue.toLowerCase();
     let searchedCustomers = customersToSearchIn.filter((customer) => {
+      console.log(customer.id.toString().includes(valueToSearch));
       return (
         customer.firstName.toLowerCase().includes(valueToSearch) ||
         customer.lastName.toLowerCase().includes(valueToSearch) ||
         customer.description.toLowerCase().includes(valueToSearch) ||
-        customer.id.toString().includes(valueToSearch)
+        customer.id.toString().indexOf(valueToSearch) > -1
       );
     });
 
@@ -133,7 +134,7 @@ const App = () => {
   return (
     <div className="container">
       {notificationMessage && <Notification content={notificationMessage} />}
-      {addCustomerOpen || editOpen ? (
+      {addCustomerOpen || updateCustomerOpen ? (
         <Modal>
           <Form
             setCustomersData={setCustomersData}
@@ -141,8 +142,8 @@ const App = () => {
             setAddCustomerOpen={setAddCustomerOpen}
             setNotificationMessage={setNotificationMessage}
             addCustomerOpen={addCustomerOpen}
-            editOpen={editOpen}
-            setEditOpen={setEditOpen}
+            updateCustomerOpen={updateCustomerOpen}
+            setUpdateCustomerOpen={setUpdateCustomerOpen}
             customerToEdit={customerToEdit}
           />
         </Modal>
@@ -161,7 +162,7 @@ const App = () => {
         setCustomersData={setCustomersData}
         sort={sort}
         setSort={setSort}
-        setEditOpen={setEditOpen}
+        setUpdateCustomerOpen={setUpdateCustomerOpen}
         setCustomerToEdit={setCustomerToEdit}
       />
       {customersReadyToRender.length === 0 ? null : (

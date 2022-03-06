@@ -9,7 +9,7 @@ const FormSelect = ({
   options,
   isInputValid,
   errorMessage,
-  blurHandler
+  blurHandler,
 }) => {
   return (
     <div>
@@ -33,7 +33,11 @@ const FormSelect = ({
           )
         )}
       </select>
-      {isInputValid ? <i className="fas fa-check-circle"></i> : <InputError errorMessage={errorMessage} />}
+      {isInputValid ? (
+        <i className="fas fa-check-circle"></i>
+      ) : (
+        <InputError errorMessage={errorMessage} />
+      )}
     </div>
   );
 };

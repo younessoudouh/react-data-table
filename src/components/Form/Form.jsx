@@ -11,8 +11,8 @@ const Form = ({
   customersData,
   setNotificationMessage,
   addCustomerOpen,
-  editOpen,
-  setEditOpen,
+  updateCustomerOpen,
+  setUpdateCustomerOpen,
   customerToEdit,
 }) => {
   const [customerInfo, setCustomerInfo] = useState({
@@ -33,14 +33,14 @@ const Form = ({
     return customersData.filter(
       (customer) => customer.id !== customerToEdit.id
     );
-  }, [editOpen]);
+  }, [updateCustomerOpen]);
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
   useEffect(() => {
-    if (editOpen) {
+    if (updateCustomerOpen) {
       setCustomerInfo(customerToEdit);
     }
   }, []);
@@ -53,7 +53,7 @@ const Form = ({
   }, [customerInfo.lastName]);
 
   useEffect(() => {
-    if (editOpen) {
+    if (updateCustomerOpen) {
       validateFirstName(customersToUseForEdit);
       return;
     } else if (firstRender.current) {
@@ -63,7 +63,7 @@ const Form = ({
   }, [customerInfo.firstName]);
 
   useEffect(() => {
-    if (editOpen) {
+    if (updateCustomerOpen) {
       validateNumber(customersToUseForEdit);
       return;
     } else if (firstRender.current) {
@@ -157,15 +157,15 @@ const Form = ({
     return customersToUseForEdit;
   };
 
-  const editHandler = () => {
+  const updateHandler = () => {
     let isFormValid = Object.values(errors).every(
       (error) => error.length === 0
     );
 
     if (isFormValid) {
       setCustomersData(updateCustomersData());
-      setEditOpen(false);
-      setNotificationMessage(`You Edit ${customerInfo.firstName} Successfully`);
+      setUpdateCustomerOpen(false);
+      setNotificationMessage(`You Update ${customerInfo.firstName} Successfully`);
     }
   };
 
@@ -327,12 +327,12 @@ const Form = ({
 
   const handleCuncel = () => {
     setAddCustomerOpen(false);
-    setEditOpen(false);
+    setUpdateCustomerOpen(false);
   };
 
   const handleFormInputChange = (event) => {
     const { name: inputName, value: inputValue } = event.target;
-    setCustomerInfo((previous) => ({ ...previous, [inputName]: inputValue }));
+    setCustomerInfo((previous) => ({ ...previous, [inputName]: wordCapitalize(inputValue) }));
   };
 
   return (
@@ -376,7 +376,7 @@ const Form = ({
           changeHandler={(event) => handleFormInputChange(event)}
           isInputValid={customerInfo.status && !errors.status}
           errorMessage={errors.status}
-          options={["Select status", "active", "inactive"]}
+          options={["Select status", "Active", "Inactive"]}
         />
       </section>
       <section className="second-section">
@@ -449,12 +449,12 @@ const Form = ({
             Submit
           </Button>
         )}
-        {editOpen && (
-          <Button className="btn" type="button" clickHandler={editHandler}>
+        {updateCustomerOpen && (
+          <Button className="btn" type="button" onClick={updateHandler}>
             Update
           </Button>
         )}
-        <Button className="btn" type="button" clickHandler={handleCuncel}>
+        <Button className="btn" type="button" onClick={handleCuncel}>
           Cuncel
         </Button>
       </section>

@@ -43,14 +43,14 @@ const CustomerRow = ({
         <h4 className="inr">{currency}</h4>
       </td>
       <td className="status">
-        <Button className={status}>{status}</Button>
+        <Button className={status.toLowerCase()}>{status}</Button>
       </td>
       <td>
         <div className="flex">
-          <Button clickHandler={editClickHandler} className="trash">
+          <Button onClick={editClickHandler} className="trash">
           <i className="fas fa-pen"></i>
           </Button>
-          <Button clickHandler={deleteClickHandler} className="trash">
+          <Button onClick={deleteClickHandler} className="trash">
             <i className="far fa-trash-alt"></i>
           </Button>
           <i className="fas fa-ellipsis-v" onClick={()=>console.log("fff")}></i>

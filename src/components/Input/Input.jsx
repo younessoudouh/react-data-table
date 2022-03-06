@@ -1,10 +1,10 @@
 import React from "react";
 
-const Input = ({ htmlFor, id, type, value, changeHandler, checked, text }) => {
+const Input = ({id, type, value, changeHandler, checked, label }) => {
   return (
     <div className="sort-option">
-      <label htmlFor={htmlFor} className="sort-label">
-        {text}
+      <label htmlFor={id} className="sort-label">
+        {label}
       </label>
       <input
         className="sort-input"
