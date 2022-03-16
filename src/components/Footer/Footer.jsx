@@ -10,6 +10,7 @@ const Footer = ({
   allCustomersCount,
   customersReadyToRender,
   activeCustomersCount,
+  customersData
 }) => {
   const handleRowsChange = (e) => {
     const rows = parseInt(e.target.value);
@@ -34,7 +35,7 @@ const Footer = ({
         {` `}
         <strong>{activeCustomersCount}</strong>
         {` `} / {` `}
-        <small>{allCustomersCount}</small>
+        <small>{customersData.length}</small>
       </div>
       <div className="right-side">
         <ul>

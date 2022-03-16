@@ -174,6 +174,7 @@ const App = () => {
           allCustomersCount={allCustomersCount}
           customersReadyToRender={customersReadyToRender}
           activeCustomersCount={activeCustomersCount}
+          customersData={customersData}
         />
       )}
     </div>
