@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Table.css";
 import CustomerRow from "../CustomerRow/CustomerRow";
+import { globalContext } from "../../Hooks/GlobalContext";
 
 const Table = ({
   customersData,
   customersReadyToRender,
   setCustomersData,
-  sort,
-  setSort,
   setUpdateCustomerOpen,
   setCustomerToEdit,
 }) => {
+  const { sort, setSort } = useContext(globalContext);
+
   const setCustomersInLocalStorage = (customersList) =>
     localStorage.setItem("customers", JSON.stringify(customersList));
 

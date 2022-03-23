@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import FilterPopUp from "../FilterPopUp/FilterPopUp";
 import "./Filter.css";
 
-const Filter = ({ sort, setSort }) => {
+const Filter = () => {
   const [filterOpen, setFilterOpen] = useState(false);
 
   const handleFilterOpen = (event) => {
@@ -19,12 +19,7 @@ const Filter = ({ sort, setSort }) => {
         onClick={handleFilterOpen}
       />
       {filterOpen && (
-        <FilterPopUp
-          filterOpen={filterOpen}
-          setFilterOpen={setFilterOpen}
-          sort={sort}
-          setSort={setSort}
-        />
+        <FilterPopUp filterOpen={filterOpen} setFilterOpen={setFilterOpen} />
       )}
     </div>
   );

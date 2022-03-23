@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import "./FilterPopUp.css";
 import Input from "../Input/Input";
+import { globalContext } from "../../Hooks/GlobalContext";
 
-const FilterPopUp = ({ sort, setSort, filterOpen, setFilterOpen }) => {
+const FilterPopUp = ({ filterOpen, setFilterOpen }) => {
+  const { sort, setSort } = useContext(globalContext);
   const stopPropagationForPopUp = (event) => {
     event.stopPropagation();
   };

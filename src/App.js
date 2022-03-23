@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import Header from "./components/Header/Header";
 import Table from "./components/Table/Table";
 import Footer from "./components/Footer/Footer";
@@ -7,6 +7,7 @@ import "./index.css";
 import Modal from "./components/Modal/Modal";
 import Form from "./components/Form/Form";
 import Notification from "./components/Notification/Notification";
+import { globalContext } from "./Hooks/GlobalContext";
 
 const App = () => {
   useEffect(() => {
@@ -25,16 +26,12 @@ const App = () => {
     getCustomersFromLocalStorage()
   );
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
   const [addCustomerOpen, setAddCustomerOpen] = useState(false);
   const [updateCustomerOpen, setUpdateCustomerOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-  const [sort, setSort] = useState({
-    name: "sort-default",
-    status: "sort-default",
-  });
   const [notificationMessage, setNotificationMessage] = useState("");
   const [customerToEdit, setCustomerToEdit] = useState({});
+  const { searchValue, currentPage, setCurrentPage, sort } =
+    useContext(globalContext);
 
   const resetNotificationMessage = useCallback(() => {
     const removeHighlight = () => {
@@ -59,7 +56,6 @@ const App = () => {
   const searchCustomers = (customersToSearchIn) => {
     let valueToSearch = searchValue.toLowerCase();
     let searchedCustomers = customersToSearchIn.filter((customer) => {
-      console.log(customer.id.toString().includes(valueToSearch));
       return (
         customer.firstName.toLowerCase().includes(valueToSearch) ||
         customer.lastName.toLowerCase().includes(valueToSearch) ||
@@ -148,29 +144,18 @@ const App = () => {
           />
         </Modal>
       ) : null}
-      <Header
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
-        setCurrentPage={setCurrentPage}
-        sort={sort}
-        setSort={setSort}
-        setAddCustomerOpen={setAddCustomerOpen}
-      />
+      <Header setAddCustomerOpen={setAddCustomerOpen} />
       <Table
         customersData={customersData}
         customersReadyToRender={customersReadyToRender}
         setCustomersData={setCustomersData}
-        sort={sort}
-        setSort={setSort}
         setUpdateCustomerOpen={setUpdateCustomerOpen}
         setCustomerToEdit={setCustomerToEdit}
       />
       {customersReadyToRender.length === 0 ? null : (
         <Footer
-          currentPage={currentPage}
           rowsPerPage={rowsPerPage}
           setRowsPerPage={setRowsPerPage}
-          setCurrentPage={setCurrentPage}
           allCustomersCount={allCustomersCount}
           customersReadyToRender={customersReadyToRender}
           activeCustomersCount={activeCustomersCount}
