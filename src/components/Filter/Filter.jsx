@@ -13,7 +13,7 @@ const Filter = () => {
   return (
     <div className="filter">
       <img
-        src="/images/filter-icon.png"
+        src="/images/filter_icon.png"
         alt="filter"
         className="img-filter"
         onClick={handleFilterOpen}

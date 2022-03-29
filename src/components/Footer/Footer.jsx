@@ -1,22 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Footer.css";
 import Select from "../Select/Select";
+import { globalContext } from "../../Hooks/GlobalContext";
 
 const Footer = ({
-  currentPage,
   rowsPerPage,
   setRowsPerPage,
-  setCurrentPage,
   allCustomersCount,
   customersReadyToRender,
   activeCustomersCount,
-  customersData
+  customersData,
 }) => {
   const handleRowsChange = (e) => {
     const rows = parseInt(e.target.value);
     setCurrentPage(1);
     setRowsPerPage(rows);
   };
+
+  const { currentPage, setCurrentPage } = useContext(globalContext);
 
   const handlePreviousPage = () => {
     setCurrentPage((previous) => (previous > 1 ? previous - 1 : previous));
