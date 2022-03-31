@@ -1,11 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 import "./Select.css";
 
-const Select = ({options,...rest }) => {
+const Select = ({ options, ...rest }) => {
   return (
-    <select
-     {...rest}
-    >
+    <select {...rest}>
       {options.map((option, index) => (
         <option key={index} value={option}>
           {option}
@@ -15,4 +13,4 @@ const Select = ({options,...rest }) => {
   );
 };
 
-export default Select;
+export default memo(Select);
