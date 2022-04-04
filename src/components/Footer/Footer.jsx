@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useContext } from "react";
+import React, { memo, useCallback, useContext, useMemo } from "react";
 import "./Footer.css";
 import Select from "../Select/Select";
 import { globalContext } from "../../Hooks/GlobalContext";
@@ -12,18 +12,23 @@ const Footer = ({
   customersReadyToRender,
   customersData,
 }) => {
+  const { currentPage, setCurrentPage } = useContext(globalContext);
+
   const handleRowsChange = useCallback((e) => {
     const rows = parseInt(e.target.value);
     setCurrentPage(1);
     setRowsPerPage(rows);
   }, []);
 
-  const activeCustomersCount = () => {
+  const activeCustomersLength = () => {
     return customersData.filter((customer) => customer.status === "active")
       .length;
   };
 
-  const { currentPage, setCurrentPage } = useContext(globalContext);
+  const activeCustomersCount = useMemo(
+    () => activeCustomersLength(),
+    [customersData]
+  );
 
   const handlePreviousPage = () => {
     setCurrentPage((previous) => (previous > 1 ? previous - 1 : previous));
@@ -40,7 +45,7 @@ const Footer = ({
       <div className="active-customers">
         active customers:
         {` `}
-        <strong>{activeCustomersCount()}</strong>
+        <strong>{activeCustomersCount}</strong>
         {` `} / {` `}
         <small>{customersData.length}</small>
       </div>

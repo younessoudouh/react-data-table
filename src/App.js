@@ -8,29 +8,15 @@ import React, {
 import Header from "./components/Header/Header";
 import Table from "./components/Table/Table";
 import Footer from "./components/Footer/Footer";
-import customers from "./Customers";
 import "./index.css";
 import Modal from "./components/Modal/Modal";
 import Form from "./components/Form/Form";
 import Notification from "./components/Notification/Notification";
 import { globalContext } from "./Hooks/GlobalContext";
+import useData from "./Hooks/useData";
 
 const App = () => {
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("customers")) === null) {
-      localStorage.setItem("customers", JSON.stringify(customers));
-    }
-  }, []);
-
-  const getCustomersFromLocalStorage = () => {
-    return localStorage.getItem("customers")
-      ? JSON.parse(localStorage.getItem("customers"))
-      : [];
-  };
-
-  const [customersData, setCustomersData] = useState(() =>
-    getCustomersFromLocalStorage()
-  );
+  const [customersData, setCustomersData] = useData();
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [addCustomerOpen, setAddCustomerOpen] = useState(false);
   const [updateCustomerOpen, setUpdateCustomerOpen] = useState(false);
@@ -94,14 +80,22 @@ const App = () => {
   const sortCustomersByStatus = (customers, sortOrder) => {
     if (sortOrder.status === "sort-active") {
       return customers
-        .filter((customer) => customer.status === "active")
-        .concat(customers.filter((customer) => customer.status === "inactive"));
+        .filter((customer) => customer.status.toLowerCase() === "active")
+        .concat(
+          customers.filter(
+            (customer) => customer.status.toLowerCase() === "inactive"
+          )
+        );
     }
 
     if (sortOrder.status === "sort-inactive") {
       return customers
-        .filter((customer) => customer.status === "inactive")
-        .concat(customers.filter((customer) => customer.status === "active"));
+        .filter((customer) => customer.status.toLowerCase() === "inactive")
+        .concat(
+          customers.filter(
+            (customer) => customer.status.toLowerCase() === "active"
+          )
+        );
     }
     return customers;
   };
@@ -115,7 +109,10 @@ const App = () => {
     return sortCustomersByStatus(sortedByName, sort);
   };
 
-  const sortedCustomers = useMemo(() => sortCombined(customersData), [sort]);
+  const sortedCustomers = useMemo(
+    () => sortCombined(customersData),
+    [sort, customersData]
+  );
   const searchedCustomers = useMemo(
     () => searchCustomers(sortedCustomers),
     [searchValue, sortedCustomers]
