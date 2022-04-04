@@ -1,30 +1,22 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import Header from "./components/Header/Header";
 import Table from "./components/Table/Table";
 import Footer from "./components/Footer/Footer";
-import customers from "./Customers";
 import "./index.css";
 import Modal from "./components/Modal/Modal";
 import Form from "./components/Form/Form";
 import Notification from "./components/Notification/Notification";
 import { globalContext } from "./Hooks/GlobalContext";
+import useData from "./Hooks/useData";
 
 const App = () => {
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("customers")) === null) {
-      localStorage.setItem("customers", JSON.stringify(customers));
-    }
-  }, []);
-
-  const getCustomersFromLocalStorage = () => {
-    return localStorage.getItem("customers")
-      ? JSON.parse(localStorage.getItem("customers"))
-      : [];
-  };
-
-  const [customersData, setCustomersData] = useState(() =>
-    getCustomersFromLocalStorage()
-  );
+  const [customersData, setCustomersData] = useData();
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [addCustomerOpen, setAddCustomerOpen] = useState(false);
   const [updateCustomerOpen, setUpdateCustomerOpen] = useState(false);
@@ -47,7 +39,7 @@ const App = () => {
         localStorage.setItem("customers", JSON.stringify(removeHighlight()));
       }, 3000);
     }
-  }, [notificationMessage]);
+  }, [notificationMessage, customersData]);
 
   useEffect(() => {
     resetNotificationMessage();
@@ -88,40 +80,56 @@ const App = () => {
   const sortCustomersByStatus = (customers, sortOrder) => {
     if (sortOrder.status === "sort-active") {
       return customers
-        .filter((customer) => customer.status === "active")
-        .concat(customers.filter((customer) => customer.status === "inactive"));
+        .filter((customer) => customer.status.toLowerCase() === "active")
+        .concat(
+          customers.filter(
+            (customer) => customer.status.toLowerCase() === "inactive"
+          )
+        );
     }
 
     if (sortOrder.status === "sort-inactive") {
       return customers
-        .filter((customer) => customer.status === "inactive")
-        .concat(customers.filter((customer) => customer.status === "active"));
+        .filter((customer) => customer.status.toLowerCase() === "inactive")
+        .concat(
+          customers.filter(
+            (customer) => customer.status.toLowerCase() === "active"
+          )
+        );
     }
     return customers;
   };
 
-  const sortCombined = (customers, sortOrders) => {
-    if (
-      sortOrders.name === "sort-default" &&
-      sortOrders.status === "sort-default"
-    )
+  const sortCombined = (customers) => {
+    if (sort.name === "sort-default" && sort.status === "sort-default")
       return customers;
 
-    let sortedByName = sortCustomersByName(customers, sortOrders);
+    let sortedByName = sortCustomersByName(customers, sort);
 
-    return sortCustomersByStatus(sortedByName, sortOrders);
+    return sortCustomersByStatus(sortedByName, sort);
   };
 
-  const sortedCustomers = sortCombined(customersData, sort);
-  const searchedCustomers = searchCustomers(sortedCustomers);
-  const activeCustomersCount = customersData.filter(
-    (customer) => customer.status === "active"
-  ).length;
-  const allCustomersCount = searchedCustomers.length;
+  const sortedCustomers = useMemo(
+    () => sortCombined(customersData),
+    [sort, customersData]
+  );
+  const searchedCustomers = useMemo(
+    () => searchCustomers(sortedCustomers),
+    [searchValue, sortedCustomers]
+  );
+
+  const allCustomersCount = useMemo(() => {
+    return searchedCustomers.length;
+  }, [searchedCustomers]);
+
   const customersReadyToRender = searchedCustomers.slice(
     (currentPage - 1) * rowsPerPage,
     rowsPerPage * currentPage
   );
+
+  const handleClickOnAddCustomer = useCallback(() => {
+    setAddCustomerOpen(true);
+  }, []);
 
   if (customersReadyToRender.length === 0 && currentPage !== 1) {
     setCurrentPage((previous) => previous - 1);
@@ -144,7 +152,7 @@ const App = () => {
           />
         </Modal>
       ) : null}
-      <Header setAddCustomerOpen={setAddCustomerOpen} />
+      <Header handleClickOnAddCustomer={handleClickOnAddCustomer} />
       <Table
         customersData={customersData}
         customersReadyToRender={customersReadyToRender}
@@ -158,7 +166,6 @@ const App = () => {
           setRowsPerPage={setRowsPerPage}
           allCustomersCount={allCustomersCount}
           customersReadyToRender={customersReadyToRender}
-          activeCustomersCount={activeCustomersCount}
           customersData={customersData}
         />
       )}

@@ -4,11 +4,7 @@ import Button from "../Button/Button";
 import Filter from "../Filter/Filter";
 import "./Header.css";
 
-const Header = ({ setAddCustomerOpen }) => {
-  const handleClickOnAddCustomer = () => {
-    setAddCustomerOpen(true);
-  };
-
+const Header = ({ handleClickOnAddCustomer }) => {
   return (
     <header>
       <div className="filter-wrap">

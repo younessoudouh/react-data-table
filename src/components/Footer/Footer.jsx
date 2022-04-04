@@ -1,23 +1,34 @@
-import React, { useContext } from "react";
+import React, { memo, useCallback, useContext, useMemo } from "react";
 import "./Footer.css";
 import Select from "../Select/Select";
 import { globalContext } from "../../Hooks/GlobalContext";
+
+const options = [5, 10, 15, 20, 25];
 
 const Footer = ({
   rowsPerPage,
   setRowsPerPage,
   allCustomersCount,
   customersReadyToRender,
-  activeCustomersCount,
   customersData,
 }) => {
-  const handleRowsChange = (e) => {
+  const { currentPage, setCurrentPage } = useContext(globalContext);
+
+  const handleRowsChange = useCallback((e) => {
     const rows = parseInt(e.target.value);
     setCurrentPage(1);
     setRowsPerPage(rows);
+  }, []);
+
+  const activeCustomersLength = () => {
+    return customersData.filter((customer) => customer.status === "active")
+      .length;
   };
 
-  const { currentPage, setCurrentPage } = useContext(globalContext);
+  const activeCustomersCount = useMemo(
+    () => activeCustomersLength(),
+    [customersData]
+  );
 
   const handlePreviousPage = () => {
     setCurrentPage((previous) => (previous > 1 ? previous - 1 : previous));
@@ -46,7 +57,7 @@ const Footer = ({
               value={rowsPerPage}
               onChange={handleRowsChange}
               className={"select-rows"}
-              options={[5, 10, 15, 20, 25]}
+              options={options}
             />
           </li>
           <li>
@@ -73,4 +84,4 @@ const Footer = ({
   );
 };
 
-export default Footer;
+export default memo(Footer);
